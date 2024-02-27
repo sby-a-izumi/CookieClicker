@@ -27,12 +27,17 @@ namespace AIWpfIntroduction.Example.ViewModels
         {
             get { return this._nowCookie; }
             //値が違う場合更新
-            set { 
-                if(this._nowCookie == null)
+            set
+            {
+                if (this._nowCookie == null)
                 {
                     this._nowCookie = 0.ToString();
                 }
-                SetProperty(ref this._nowCookie, value); }
+                if (SetProperty(ref this._nowCookie, value))
+                {
+                    this.UpgradeAdd.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         private string _incCookie = 1.ToString();
@@ -193,6 +198,41 @@ namespace AIWpfIntroduction.Example.ViewModels
             }
         }
 
+        private DelegateCommand _upgradeAdd;
+        //増加値の増加量をアップグレードするコマンドの取得
+        public DelegateCommand UpgradeAdd
+        {
+            get
+            {
+                return this._upgradeAdd ?? (this._upgradeAdd = new DelegateCommand(
+                    _ =>
+                    {
+                        OnAdd();
+                    },
+                    _ =>
+                    {
+                        var dummy = 0.0;
+                        if (!double.TryParse(this._nowCookie, out dummy))
+                        {
+                            return false;
+                        }
+                        if (!double.TryParse(this._nowAdd, out dummy))
+                        {
+                            return false;
+                        }
+                        if (!double.TryParse(this._costAdd, out dummy))
+                        {
+                            return false;
+                        }
+                    
+                        if (double.Parse(this._nowCookie) < double.Parse(this._costAdd))
+                        {
+                            return false;
+                        }
+                        return true;
+                    }));
+            }
+        }
         //現在値を変更する
         private void UpdateNowCookie()
         {
@@ -237,6 +277,33 @@ namespace AIWpfIntroduction.Example.ViewModels
             this.IncCookie = this._calc.IncCookie.ToString();
         }
 
+        //増加値の増加量をアップグレード
+        private void OnAdd()
+        {
+            var nowCookie = 0.0;
+            var nowAdd = 0.0;
+            var costAdd = 0.0;
+            if(!double.TryParse(this.NowCookie, out nowCookie))
+            {
+                return;
+            }
+            if(! double.TryParse(this.NowAdd, out nowAdd))
+            {
+                return;
+            }
+            if(!double.TryParse(this.CostAdd, out costAdd))
+            {
+                return;
+            }
+            this._calc.NowCookie = nowCookie;
+            this._calc.NowAdd = nowAdd;
+            this._calc.CostAdd = costAdd;
+            this._calc.ExecuteUpgradeAdd();
+            this.NowCookie = this._calc.NowCookie.ToString();
+            this.NowAdd = this._calc.NowAdd.ToString();
+            this.CostAdd = this._calc.CostAdd.ToString();
+
+        }
         //計算を行うオブジェクト
         private Calculator _calc;
         
