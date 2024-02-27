@@ -193,6 +193,7 @@ namespace AIWpfIntroduction.Example.ViewModels
             }
         }
 
+        //現在値を変更する
         private void UpdateNowCookie()
         {
             var nowCookie = 0.0;
@@ -211,6 +212,7 @@ namespace AIWpfIntroduction.Example.ViewModels
             this.NowCookie = this._calc.NowCookie.ToString();
         }
         
+        //増加値を変更する
         private void UpdateIncCookie()
         {
             var incCookie = 0.0;
