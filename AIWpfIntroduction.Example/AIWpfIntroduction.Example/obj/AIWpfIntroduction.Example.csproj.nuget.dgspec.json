@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\a-izumi\\source\\repos\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example.csproj": {}
+    "C:\\Users\\a-izumi\\Documents\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example.csproj": {}
   },
   "projects": {
-    "C:\\Users\\a-izumi\\source\\repos\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example.csproj": {
+    "C:\\Users\\a-izumi\\Documents\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\a-izumi\\source\\repos\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example.csproj",
+        "projectUniqueName": "C:\\Users\\a-izumi\\Documents\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example.csproj",
         "projectName": "AIWpfIntroduction.Example",
-        "projectPath": "C:\\Users\\a-izumi\\source\\repos\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example.csproj",
+        "projectPath": "C:\\Users\\a-izumi\\Documents\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example.csproj",
         "packagesPath": "C:\\Users\\a-izumi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\a-izumi\\source\\repos\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example\\obj\\",
+        "outputPath": "C:\\Users\\a-izumi\\Documents\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example\\AIWpfIntroduction.Example\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\a-izumi\\AppData\\Roaming\\NuGet\\NuGet.Config",
