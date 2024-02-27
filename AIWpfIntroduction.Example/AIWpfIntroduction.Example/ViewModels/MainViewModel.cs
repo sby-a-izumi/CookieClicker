@@ -108,7 +108,7 @@ namespace AIWpfIntroduction.Example.ViewModels
 
         //アップグレード費用
 
-        private string _costAdd = 20.ToString();
+        private string _costAdd = 50.ToString();
         //増加値の増加量コスト
         public string CostAdd
         {
@@ -224,6 +224,10 @@ namespace AIWpfIntroduction.Example.ViewModels
                         {
                             return false;
                         }
+                        if (!double.TryParse(this._incCookie, out dummy))
+                        {
+                            return false;
+                        }
                     
                         if (double.Parse(this._nowCookie) < double.Parse(this._costAdd))
                         {
@@ -283,6 +287,7 @@ namespace AIWpfIntroduction.Example.ViewModels
             var nowCookie = 0.0;
             var nowAdd = 0.0;
             var costAdd = 0.0;
+            var incCookie = 0.0;
             if(!double.TryParse(this.NowCookie, out nowCookie))
             {
                 return;
@@ -295,13 +300,20 @@ namespace AIWpfIntroduction.Example.ViewModels
             {
                 return;
             }
+            if(!double.TryParse(this.IncCookie, out incCookie))
+            {
+                return;
+            }
             this._calc.NowCookie = nowCookie;
             this._calc.NowAdd = nowAdd;
             this._calc.CostAdd = costAdd;
+            this._calc.IncCookie = incCookie;
             this._calc.ExecuteUpgradeAdd();
             this.NowCookie = this._calc.NowCookie.ToString();
             this.NowAdd = this._calc.NowAdd.ToString();
             this.CostAdd = this._calc.CostAdd.ToString();
+            this.IncCookie = this._calc.IncCookie.ToString();
+            this._calc.ExecuteCalcIncCookie();
 
         }
         //計算を行うオブジェクト

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,6 +53,8 @@ namespace AIWpfIntroduction.Example.Models
             this.NowCookie = this.NowCookie - this.CostAdd;
             //アップグレードコストを上昇
             this.CostAdd = this.CostAdd + 50;
+            //増加値を増加量分増やす
+            this.IncCookie = this.IncCookie + 1;
         }
     }
 }
