@@ -21,6 +21,7 @@ namespace AIWpfIntroduction.Example.ViewModels
             this._calc = new Calculator();
         }
 
+        #region 各プロパティの取得または設定
         private string _nowCookie = 0.ToString();
         //現在値の取得または設定
         public string NowCookie
@@ -29,16 +30,15 @@ namespace AIWpfIntroduction.Example.ViewModels
             //値が違う場合更新
             set
             {
-                if (this._nowCookie == null)
-                {
-                    this._nowCookie = 0.ToString();
-                }
+                //アップグレード可能かどうか判定する
                 if (SetProperty(ref this._nowCookie, value))
                 {
                     this.UpgradeAdd.RaiseCanExecuteChanged();
+                    this.UpgradeMul.RaiseCanExecuteChanged();
                 }
             }
         }
+        
 
         private string _incCookie = 1.ToString();
         //増加値の取得または設定
@@ -108,7 +108,7 @@ namespace AIWpfIntroduction.Example.ViewModels
 
         //アップグレード費用
 
-        private string _costAdd = 50.ToString();
+        private string _costAdd = 10.ToString();
         //増加値の増加量コスト
         public string CostAdd
         {
@@ -116,7 +116,7 @@ namespace AIWpfIntroduction.Example.ViewModels
             private set { SetProperty(ref this._costAdd, value); }
         }
 
-        private string _costMul = 200.ToString();
+        private string _costMul = 20.ToString();
         //増加値の倍率コスト
         public string CostMul
         {
@@ -139,6 +139,10 @@ namespace AIWpfIntroduction.Example.ViewModels
             get { return this._costInt; }
             private set { SetProperty(ref this._costInt, value); }
         }
+        #endregion 各プロパティの取得または設定
+
+
+        #region 各コマンドの取得メソッド
 
         private DelegateCommand _calcNowCommand;
         //現在値変更コマンドの取得
@@ -212,7 +216,9 @@ namespace AIWpfIntroduction.Example.ViewModels
                     _ =>
                     {
                         var dummy = 0.0;
-                        if (!double.TryParse(this._nowCookie, out dummy))
+                        var nowCookie = 0.0;
+                        var costAdd = 0.0;
+                        if (!double.TryParse(this._nowCookie, out nowCookie))
                         {
                             return false;
                         }
@@ -220,7 +226,7 @@ namespace AIWpfIntroduction.Example.ViewModels
                         {
                             return false;
                         }
-                        if (!double.TryParse(this._costAdd, out dummy))
+                        if (!double.TryParse(this._costAdd, out costAdd))
                         {
                             return false;
                         }
@@ -228,8 +234,12 @@ namespace AIWpfIntroduction.Example.ViewModels
                         {
                             return false;
                         }
-                    
-                        if (double.Parse(this._nowCookie) < double.Parse(this._costAdd))
+                        if (!double.TryParse(this._nowMul, out dummy))
+                        {
+                            return false;
+                        }
+                        // アップグレード条件
+                        if (nowCookie < costAdd)
                         {
                             return false;
                         }
@@ -237,6 +247,51 @@ namespace AIWpfIntroduction.Example.ViewModels
                     }));
             }
         }
+
+        private DelegateCommand _upgradeMul;
+        //増加量の倍率をアップグレードするコマンドの取得
+        public DelegateCommand UpgradeMul
+        {
+            get
+            {
+                return this._upgradeMul ?? (this._upgradeMul = new DelegateCommand(
+                    _ =>
+                    {
+                        OnMul();
+                    },
+                    _ =>
+                    {
+                        var dummy = 0.0;
+                        var nowCookie = 0.0;
+                        var costMul = 0.0;
+                        if (!double.TryParse(this._nowCookie, out nowCookie))
+                        {
+                            return false;
+                        }
+                        if (!double.TryParse(this._nowMul, out dummy))
+                        {
+                            return false;
+                        }
+                    if (!double.TryParse(this._costMul, out costMul))
+                        {
+                            return false;
+                        }
+                        if (!double.TryParse(this._incCookie, out dummy))
+                        {
+                            return false;
+                        }
+
+                        if (nowCookie < costMul)
+                        {
+                            return false;
+                        }
+                        return true;
+                    }));
+            }
+        }
+        #endregion 各コマンドの取得メソッド
+
+        #region 各コマンド本体
         //現在値を変更する
         private void UpdateNowCookie()
         {
@@ -288,34 +343,49 @@ namespace AIWpfIntroduction.Example.ViewModels
             var nowAdd = 0.0;
             var costAdd = 0.0;
             var incCookie = 0.0;
-            if(!double.TryParse(this.NowCookie, out nowCookie))
-            {
-                return;
-            }
-            if(! double.TryParse(this.NowAdd, out nowAdd))
-            {
-                return;
-            }
-            if(!double.TryParse(this.CostAdd, out costAdd))
-            {
-                return;
-            }
-            if(!double.TryParse(this.IncCookie, out incCookie))
-            {
-                return;
-            }
+            var nowMul = 0.0;
+            //コマンド取得の時点で数値以外弾いているが、想定外のトラブルを想定してTryParseで実装
+            if (!double.TryParse(this.NowCookie, out nowCookie)) { return; }
+            if (!double.TryParse(this.NowAdd, out nowAdd)) { return; }
+            if (!double.TryParse(this.CostAdd, out costAdd)) { return; }
+            if (!double.TryParse(this.IncCookie, out incCookie)) { return; }
+            if (!double.TryParse(this.NowMul, out nowMul)) { return; }
             this._calc.NowCookie = nowCookie;
             this._calc.NowAdd = nowAdd;
             this._calc.CostAdd = costAdd;
             this._calc.IncCookie = incCookie;
+            this._calc.NowMul = nowMul;
             this._calc.ExecuteUpgradeAdd();
             this.NowCookie = this._calc.NowCookie.ToString();
             this.NowAdd = this._calc.NowAdd.ToString();
             this.CostAdd = this._calc.CostAdd.ToString();
             this.IncCookie = this._calc.IncCookie.ToString();
-            this._calc.ExecuteCalcIncCookie();
 
         }
+
+        private void OnMul()
+        {
+            var nowCookie = 0.0;
+            var nowMul = 0.0;
+            var costMul = 0.0;
+            var incCookie = 0.0;
+            if (!double.TryParse(this.NowCookie, out nowCookie)) { return; }
+            if (!double.TryParse(this.NowMul, out nowMul)) { return; }
+            if (!double.TryParse(this.CostMul, out costMul)) { return; }
+            if (!double.TryParse(this.IncCookie, out incCookie)) { return; }
+            this._calc.NowCookie = nowCookie;
+            this._calc.NowMul = nowMul;
+            this._calc.CostMul = costMul;
+            this._calc.IncCookie = incCookie;
+            this._calc.ExecuteUpgradeMul();
+            this.NowCookie = this._calc.NowCookie.ToString();
+            this.NowMul = this._calc.NowMul.ToString();
+            this.CostMul = this._calc.CostMul.ToString();
+            this.IncCookie = this._calc.IncCookie.ToString();
+
+        }
+        #endregion 各コマンド本体
+
         //計算を行うオブジェクト
         private Calculator _calc;
         
