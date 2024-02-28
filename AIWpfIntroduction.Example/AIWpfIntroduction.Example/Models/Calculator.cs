@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,16 +34,35 @@ namespace AIWpfIntroduction.Example.Models
         public double CostSec { get; set; }
         public double CostInt { get; set; }
 
-
-        
+        //現在値を計算
         public void ExecuteCalcNowCookie()
         {
             this.NowCookie = this.NowCookie + this.IncCookie;
         }
+        //増加値を計算
         public void ExecuteCalcIncCookie()
         {
-            this.IncCookie = (this.IncCookie + this.NowAdd) * this.NowMul;
+            this.IncCookie = (1 + this.NowAdd) * this.NowMul;
         }
-
+        //増加値の増加量のアップグレード時の計算処理
+        public void ExecuteUpgradeAdd()
+        {
+            //増加値の増加量を計算
+            this.NowAdd = this.NowAdd + 1.0;
+            //使ったコスト分、現在値を下げる
+            this.NowCookie = this.NowCookie - this.CostAdd;
+            //アップグレードコストを上昇
+            this.CostAdd = this.CostAdd + 50;
+            //増加値を増加量分増やす
+            ExecuteCalcIncCookie();
+        }
+        //増加値の倍率のアップグレード時の計算処理
+        public void ExecuteUpgradeMul()
+        {
+            this.NowMul = this.NowMul + 0.5;
+            this.NowCookie = this.NowCookie - this.CostMul;
+            this.CostMul = this.CostMul * 10;
+            ExecuteCalcIncCookie();
+        }
     }
 }
