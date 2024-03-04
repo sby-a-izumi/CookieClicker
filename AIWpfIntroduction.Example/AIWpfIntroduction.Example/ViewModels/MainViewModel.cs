@@ -30,7 +30,6 @@ namespace AIWpfIntroduction.Example.ViewModels
             //値が違う場合更新
             set
             {
-                //アップグレード可能かどうか判定する
                 if (SetProperty(ref this._nowCookie, value))
                 {
                     this.UpgradeAdd.RaiseCanExecuteChanged();
