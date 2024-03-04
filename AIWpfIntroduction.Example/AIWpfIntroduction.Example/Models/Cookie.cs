@@ -6,12 +6,92 @@ using System.Threading.Tasks;
 
 namespace AIWpfIntroduction.Example.Models
 {
+    using AIWpfIntroduction.Example.ViewModels;
     class Cookie
     {
         public Cookie()
         {
             this._calc = new Calculator();
         }
+        #region Cookieクラスの変数
+        private string _nowCookie = "0";
+        //現在値
+        public string NowCookie
+        {
+            get { return this._nowCookie; }
+            set { this._nowCookie = value; }
+        }
+
+        private string _incCookie = "1";
+        //ボタンを押すごとに増加する値
+        public string IncCookie
+        {
+            get { return this._incCookie; }
+            set { this._incCookie = value; }
+        }
+
+        private string _nowAdd = "0";
+        //適応された増加値
+        public string NowAdd
+        {
+            get { return this._nowAdd; }
+            set { this._nowAdd = value; }
+        }
+
+        private string _nowMul = "1.0";
+        //適応された増加率
+        public string NowMul
+        {
+            get { return this._nowMul; }
+            set { this._nowMul = value; }
+        }
+
+        private string _nowSec = "0";
+        //適応された毎秒ごとの増加値
+        public string NowSec
+        {
+            get { return this._nowSec; }
+            set { this._nowSec = value; }
+        }
+
+        private string _nowInt = "0";
+        //適応された30秒ごとの増加率
+        public string NowInt
+        {
+            get { return this._nowInt; }
+            set { this._nowInt = value; }
+        }
+
+        //費用
+        private string _costAdd = "10";
+        public string CostAdd
+        {
+            get { return this._costAdd; }
+            set { this._costAdd = value; }
+        }
+
+        private string _costMul = "20";
+        public string CostMul
+        {
+            get { return this._costMul; }
+            set { this._costMul = value; }
+        }
+
+        private string _costSec = "30";
+        public string CostSec
+        {
+            get { return this._costSec; }
+            set { this._costSec = value; }
+        }
+
+        private string _costInt = "100";
+        public string CostInt
+        {
+            get { return this._costInt; }
+            set { this._costInt = value; }
+        }
+        #endregion Cookieクラスの変数
+
         #region 各コマンドの取得メソッド
 
         private DelegateCommand _calcNowCommand;
@@ -28,7 +108,7 @@ namespace AIWpfIntroduction.Example.Models
                     _ =>
                     {
                         var dummy = 0.0;
-                        if (!double.TryParse(MainViewModel._nowCookie, out dummy))
+                        if (!double.TryParse(this._nowCookie, out dummy))
                         {
                             return false;
                         }
