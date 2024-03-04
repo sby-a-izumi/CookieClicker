@@ -1,148 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AIWpfIntroduction.Example.ViewModels
+namespace AIWpfIntroduction.Example.Models
 {
-    using AIWpfIntroduction.Example.Models;
-    using System.Security.Policy;
-    using System.Windows.Media.Animation;
-
-    internal class MainViewModel : NotificationObject
+    class Cookie
     {
-        //新しいインスタンスの生成
-        public MainViewModel()
+        public Cookie()
         {
-            this._timer = new GameTimer();
             this._calc = new Calculator();
-            this._cookie = new Cookie();
         }
-
-        #region 各プロパティの取得または設定
-        private string _nowCookie = 0.ToString();
-        //現在値の取得または設定
-        public string NowCookie
-        {
-            get { return this._nowCookie; }
-            //値が違う場合更新
-            set
-            {
-                //アップグレード可能かどうか判定する
-                if (SetProperty(ref this._nowCookie, value))
-                {
-                    this.UpgradeAdd.RaiseCanExecuteChanged();
-                    this.UpgradeMul.RaiseCanExecuteChanged();
-                }
-            }
-        }
-        
-
-        private string _incCookie = 1.ToString();
-        //増加値の取得または設定
-        public string IncCookie
-        {
-            get { return this._incCookie; }
-            set { SetProperty(ref this._incCookie, value); }
-        }
-
-        //現在のパラメータ
-
-        private string _nowAdd = 0.ToString();
-        //現在の増加値の増加量
-        public string NowAdd
-        {
-            get { return this._nowAdd; }
-            set
-            {
-                if (SetProperty(ref this._nowAdd, value))
-                {
-                    this.CalcIncCommand.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        private string _nowMul = 1.0.ToString();
-        //現在の増加値の倍率
-        public string NowMul
-        {
-            get { return this._nowMul; }
-            set
-            {
-                if (SetProperty(ref this._nowMul, value))
-                {
-                    this.CalcIncCommand.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        private string _nowSec = 0.ToString();
-        //現在の毎秒増加量
-        public string NowSec
-        {
-            get { return this._nowSec; }
-            set
-            {
-                if (SetProperty(ref this._nowSec, value))
-                {
-                    this.CalcIncCommand.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        private string _nowInt = 0.ToString();
-        //現在の利息率
-        public string NowInt
-        {
-            get { return this._nowInt; }
-            set
-            {
-                if (SetProperty(ref this._nowInt, value))
-                {
-                    this.CalcIncCommand.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        //アップグレード費用
-
-        private string _costAdd = 10.ToString();
-        //増加値の増加量コスト
-        public string CostAdd
-        {
-            get { return this._costAdd; }
-            private set { SetProperty(ref this._costAdd, value); }
-        }
-
-        private string _costMul = 20.ToString();
-        //増加値の倍率コスト
-        public string CostMul
-        {
-            get { return this._costMul; }
-            private set { SetProperty(ref this._costMul, value); }
-        }
-
-        private string _costSec = 30.ToString();
-        //毎秒増加量のコスト
-        public string CostSec
-        {
-            get { return this._costSec; }
-            private set { SetProperty(ref this._costSec, value); }
-        }
-
-        private string _costInt = 100.ToString();
-        //利息率のコスト
-        public string CostInt
-        {
-            get { return this._costInt; }
-            private set { SetProperty(ref this._costInt, value); }
-        }
-        #endregion 各プロパティの取得または設定
-
-
         #region 各コマンドの取得メソッド
 
         private DelegateCommand _calcNowCommand;
@@ -159,7 +28,7 @@ namespace AIWpfIntroduction.Example.ViewModels
                     _ =>
                     {
                         var dummy = 0.0;
-                        if (!double.TryParse(this._nowCookie, out dummy))
+                        if (!double.TryParse(MainViewModel._nowCookie, out dummy))
                         {
                             return false;
                         }
@@ -273,7 +142,7 @@ namespace AIWpfIntroduction.Example.ViewModels
                         {
                             return false;
                         }
-                    if (!double.TryParse(this._costMul, out costMul))
+                        if (!double.TryParse(this._costMul, out costMul))
                         {
                             return false;
                         }
@@ -298,11 +167,11 @@ namespace AIWpfIntroduction.Example.ViewModels
         {
             var nowCookie = 0.0;
             var incCookie = 0.0;
-            if(!double.TryParse(this.NowCookie, out nowCookie))
+            if (!double.TryParse(this.NowCookie, out nowCookie))
             {
                 return;
             }
-            if(!double.TryParse(this.IncCookie, out incCookie))
+            if (!double.TryParse(this.IncCookie, out incCookie))
             {
                 return;
             }
@@ -311,22 +180,22 @@ namespace AIWpfIntroduction.Example.ViewModels
             this._calc.ExecuteCalcNowCookie();
             this.NowCookie = this._calc.NowCookie.ToString();
         }
-        
+
         //増加値を変更する
         private void UpdateIncCookie()
         {
             var incCookie = 0.0;
             var nowAdd = 0.0;
             var nowMul = 1.0;
-            if(!double.TryParse(this.IncCookie, out incCookie))
+            if (!double.TryParse(this.IncCookie, out incCookie))
             {
                 return;
             }
-            if(!double.TryParse(this.NowAdd, out nowAdd))
+            if (!double.TryParse(this.NowAdd, out nowAdd))
             {
                 return;
             }
-            if(!double.TryParse(this.NowMul, out nowMul))
+            if (!double.TryParse(this.NowMul, out nowMul))
             {
                 return;
             }
@@ -385,16 +254,9 @@ namespace AIWpfIntroduction.Example.ViewModels
             this.IncCookie = this._calc.IncCookie.ToString();
 
         }
-        #endregion 各コマンド本体
+    #endregion 各コマンド本体
 
-        //計算を行うオブジェクト
         private Calculator _calc;
-        
-        //時間を計測するオブジェクト
-        private GameTimer _timer;
 
-        //モデルオブジェクト
-        private Cookie _cookie;
     }
 }
-
