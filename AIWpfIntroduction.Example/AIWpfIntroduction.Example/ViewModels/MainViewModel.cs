@@ -18,7 +18,6 @@ namespace AIWpfIntroduction.Example.ViewModels
         public MainViewModel()
         {
             this._timer = new GameTimer();
-            this._calc = new Calculator();
             this._cookie = new Cookie();
         }
 
@@ -154,7 +153,7 @@ namespace AIWpfIntroduction.Example.ViewModels
                 return this._calcNowCommand ?? (this._calcNowCommand = new DelegateCommand(
                     _ =>
                     {
-                        UpdateNowCookie();
+                        this._cookie.UpdateNowCookie();
                     },
                     _ =>
                     {
@@ -181,7 +180,7 @@ namespace AIWpfIntroduction.Example.ViewModels
                 return this._calcIncCommand ?? (this._calcIncCommand = new DelegateCommand(
                     _ =>
                     {
-                        UpdateIncCookie();
+                        this._cookie.UpdateIncCookie();
                     },
                     _ =>
                     {
@@ -212,7 +211,7 @@ namespace AIWpfIntroduction.Example.ViewModels
                 return this._upgradeAdd ?? (this._upgradeAdd = new DelegateCommand(
                     _ =>
                     {
-                        OnAdd();
+                        this._cookie.OnAdd();
                     },
                     _ =>
                     {
@@ -258,7 +257,7 @@ namespace AIWpfIntroduction.Example.ViewModels
                 return this._upgradeMul ?? (this._upgradeMul = new DelegateCommand(
                     _ =>
                     {
-                        OnMul();
+                        this._cookie.OnMul();
                     },
                     _ =>
                     {
@@ -292,103 +291,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         }
         #endregion 各コマンドの取得メソッド
 
-        #region 各コマンド本体
-        //現在値を変更する
-        private void UpdateNowCookie()
-        {
-            var nowCookie = 0.0;
-            var incCookie = 0.0;
-            if(!double.TryParse(this.NowCookie, out nowCookie))
-            {
-                return;
-            }
-            if(!double.TryParse(this.IncCookie, out incCookie))
-            {
-                return;
-            }
-            this._calc.NowCookie = nowCookie;
-            this._calc.IncCookie = incCookie;
-            this._calc.ExecuteCalcNowCookie();
-            this.NowCookie = this._calc.NowCookie.ToString();
-        }
-        
-        //増加値を変更する
-        private void UpdateIncCookie()
-        {
-            var incCookie = 0.0;
-            var nowAdd = 0.0;
-            var nowMul = 1.0;
-            if(!double.TryParse(this.IncCookie, out incCookie))
-            {
-                return;
-            }
-            if(!double.TryParse(this.NowAdd, out nowAdd))
-            {
-                return;
-            }
-            if(!double.TryParse(this.NowMul, out nowMul))
-            {
-                return;
-            }
-            this._calc.IncCookie = incCookie;
-            this._calc.NowAdd = nowAdd;
-            this._calc.NowMul = nowMul;
-            this._calc.ExecuteCalcIncCookie();
-            this.IncCookie = this._calc.IncCookie.ToString();
-        }
 
-        //増加値の増加量をアップグレード
-        private void OnAdd()
-        {
-            var nowCookie = 0.0;
-            var nowAdd = 0.0;
-            var costAdd = 0.0;
-            var incCookie = 0.0;
-            var nowMul = 0.0;
-            //コマンド取得の時点で数値以外弾いているが、想定外のトラブルを想定してTryParseで実装
-            if (!double.TryParse(this.NowCookie, out nowCookie)) { return; }
-            if (!double.TryParse(this.NowAdd, out nowAdd)) { return; }
-            if (!double.TryParse(this.CostAdd, out costAdd)) { return; }
-            if (!double.TryParse(this.IncCookie, out incCookie)) { return; }
-            if (!double.TryParse(this.NowMul, out nowMul)) { return; }
-            this._calc.NowCookie = nowCookie;
-            this._calc.NowAdd = nowAdd;
-            this._calc.CostAdd = costAdd;
-            this._calc.IncCookie = incCookie;
-            this._calc.NowMul = nowMul;
-            this._calc.ExecuteUpgradeAdd();
-            this.NowCookie = this._calc.NowCookie.ToString();
-            this.NowAdd = this._calc.NowAdd.ToString();
-            this.CostAdd = this._calc.CostAdd.ToString();
-            this.IncCookie = this._calc.IncCookie.ToString();
-
-        }
-
-        private void OnMul()
-        {
-            var nowCookie = 0.0;
-            var nowMul = 0.0;
-            var costMul = 0.0;
-            var incCookie = 0.0;
-            if (!double.TryParse(this.NowCookie, out nowCookie)) { return; }
-            if (!double.TryParse(this.NowMul, out nowMul)) { return; }
-            if (!double.TryParse(this.CostMul, out costMul)) { return; }
-            if (!double.TryParse(this.IncCookie, out incCookie)) { return; }
-            this._calc.NowCookie = nowCookie;
-            this._calc.NowMul = nowMul;
-            this._calc.CostMul = costMul;
-            this._calc.IncCookie = incCookie;
-            this._calc.ExecuteUpgradeMul();
-            this.NowCookie = this._calc.NowCookie.ToString();
-            this.NowMul = this._calc.NowMul.ToString();
-            this.CostMul = this._calc.CostMul.ToString();
-            this.IncCookie = this._calc.IncCookie.ToString();
-
-        }
-        #endregion 各コマンド本体
-
-        //計算を行うオブジェクト
-        private Calculator _calc;
         
         //時間を計測するオブジェクト
         private GameTimer _timer;

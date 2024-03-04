@@ -243,7 +243,7 @@ namespace AIWpfIntroduction.Example.Models
 
         #region 各コマンド本体
         //現在値を変更する
-        private void UpdateNowCookie()
+        public void UpdateNowCookie()
         {
             var nowCookie = 0.0;
             var incCookie = 0.0;
@@ -262,7 +262,7 @@ namespace AIWpfIntroduction.Example.Models
         }
 
         //増加値を変更する
-        private void UpdateIncCookie()
+        public void UpdateIncCookie()
         {
             var incCookie = 0.0;
             var nowAdd = 0.0;
@@ -287,7 +287,7 @@ namespace AIWpfIntroduction.Example.Models
         }
 
         //増加値の増加量をアップグレード
-        private void OnAdd()
+        public void OnAdd()
         {
             var nowCookie = 0.0;
             var nowAdd = 0.0;
@@ -313,7 +313,7 @@ namespace AIWpfIntroduction.Example.Models
 
         }
 
-        private void OnMul()
+        public void OnMul()
         {
             var nowCookie = 0.0;
             var nowMul = 0.0;
