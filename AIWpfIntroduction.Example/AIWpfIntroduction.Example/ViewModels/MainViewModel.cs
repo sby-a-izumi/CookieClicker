@@ -1,7 +1,6 @@
 ﻿namespace AIWpfIntroduction.Example.ViewModels;
 
 using AIWpfIntroduction.Example.Models;
-using System.Threading.Tasks.Dataflow;
 
 /// <summary>
 /// MainView に対するデータコンテキストを表します。
@@ -14,120 +13,70 @@ internal class MainViewModel : NotificationObject
     public MainViewModel()
     {
         AddCommand = new DelegateCommand(_ => Add());
-        UpgradeAddValueCommand = new DelegateCommand(_ => UpgaredeAddValue());
-        UpgradeMulValueCommand = new DelegateCommand(_ => UpgradeMulValue());
+        UpgradeAddValueCommand = new DelegateCommand(_ => UpgradeAddValue());
+        UpgradeMultiValueCommand = new DelegateCommand(_ => UpgradeMultiValue());
     }
 
     #region フィールド
 
     /// <summary>
-    /// クッキークリッカー機能を提供します。
+    /// CookkieClicker 機能を提供します。
     /// </summary>
-    private Calculator _calc = new Calculator();
+    private CookieClicker _cookieClicker = new ();
 
     #endregion フィールド
 
     #region 公開プロパティ
 
-    private double _currentCookie = 0;
     /// <summary>
     /// 現在値を取得します。
     /// </summary>
-    public double CurrentCookie
-    {
-        get { return this._currentCookie; }
-        private set { SetProperty(ref this._currentCookie, value); }
-    }
-    
-    private double _currentIncCookie = 1;
+    public double CurrentCookie { get { return _cookieClicker.CurrentCookie; } }
+
     /// <summary>
     /// 現在の増加量を取得します。
     /// </summary>
-    public double CurrentIncCookie
-    {
-        get { return this._currentIncCookie; }
-        private set { SetProperty(ref this._currentIncCookie, value); }
-    }
+    public double CurrentIncCookie { get { return _cookieClicker.CurrentIncCookie; } }
 
-    private double _addIncCookie = 0;
     /// <summary>
     /// 加算増加量を取得します。
     /// </summary>
-    public double AddIncCookie
-    {
-        get { return this._addIncCookie; }
-        private set { SetProperty(ref this._addIncCookie, value); }
-    }
+    public double AddIncCookie { get { return _cookieClicker.AddIncCookie; } }
 
-    private double _multiIncCookie = 1;
     /// <summary>
     /// 増加量倍率を取得します。
     /// </summary>
-    public double MultiIncCookie
-    {
-        get { return this._multiIncCookie; }
-        private set { SetProperty(ref this._multiIncCookie, value); }
-    }
+    public double MultiIncCookie { get { return _cookieClicker.MultiIncCookie; } }
 
-    private double _secIncCookie = 1;
     /// <summary>
     /// 毎秒増加量を取得します。
     /// </summary>
-    public double SecIncCookie
-    {
-        get { return this._secIncCookie; }
-        private set { SetProperty(ref this._secIncCookie, value); }
-    }
+    public double SecIncCookie { get { return _cookieClicker.SecIncCookie; } }
 
-    private double _intIncCookie = 1;
     /// <summary>
     /// 利息率を取得します。
     /// </summary>
-    public double IntIncCookie
-    {
-        get { return this._intIncCookie; }
-        private set { SetProperty(ref this._intIncCookie, value); }
-    }
+    public double IntIncCookie { get { return _cookieClicker.IntIncCookie; } }
 
-    private double _costAdd = 10;
     /// <summary>
-    /// 追加コストを取得します。
+    /// 加算コストを取得します。
     /// </summary>
-    public double CostAdd
-    {
-        get { return this._costAdd; }
-        private set { SetProperty(ref this._costAdd, value); }
-    }
+    public double CostAdd { get { return _cookieClicker.CostAdd; } }
 
-    private double _costMul = 20;
     /// <summary>
-    /// 倍率をコストを取得します。
+    /// 倍率コストを取得します。
     /// </summary>
-    public double CostMul
-    {
-        get { return this._costMul; }
-        private set { SetProperty(ref this._costMul, value); }
-    }
+    public double CostMul { get { return _cookieClicker.CostMul; } }
 
-    private double _costSec = 30;
     /// <summary>
     /// 毎秒コストを取得します。
     /// </summary>
-    public double CostSec
-    {
-        get { return this._costSec; }
-        private set { SetProperty(ref this._costSec, value); }
-    }
+    public double CostSec { get { return _cookieClicker.CostSec; } }
 
-    private double _costInt = 100;
     /// <summary>
-    /// 利息率をコストを取得します。
+    /// 利息率 コストを取得します。
     /// </summary>
-    public double CostInt
-    {
-        get { return this._costInt; }
-        private set { SetProperty(ref this._costInt, value); }
-    }
+    public double CostInt { get { return _cookieClicker.CostInt; } }
 
     #endregion 公開プロパティ
 
@@ -143,12 +92,8 @@ internal class MainViewModel : NotificationObject
     /// </summary>
     public void Add()
     {
-        var nowCookie = 0.0;
-        var incCookie = 0.0;
-        this._calc.NowCookie = nowCookie;
-        this._calc.IncCookie = incCookie;
-        this._calc.ExecuteCalcNowCookie();
-        CurrentCookie = this._calc.NowCookie;
+        _cookieClicker.UpdateCurrentCookie();
+        RaisePropertyChanged(nameof(CurrentCookie));
     }
 
     /// <summary>
@@ -159,52 +104,30 @@ internal class MainViewModel : NotificationObject
     /// <summary>
     /// 増加値を加算します。
     /// </summary>
-    private void UpgaredeAddValue()
+    private void UpgradeAddValue()
     {
-        //var nowCookie = 0.0;
-        //var nowAdd = 0.0;
-        //var costAdd = 0.0;
-        //var incCookie = 0.0;
-        //var nowMul = 0.0;
-        //this._calc.NowCookie = nowCookie;
-        //this._calc.NowAdd = nowAdd;
-        //this._calc.CostAdd = costAdd;
-        //this._calc.IncCookie = incCookie;
-        //this._calc.NowMul = nowMul;
-        //this._calc.ExecuteUpgradeAdd();
-        //this.NowCookie = this._calc.NowCookie.ToString();
-        //this.NowAdd = this._calc.NowAdd.ToString();
-        //this.CostAdd = this._calc.CostAdd.ToString();
-        //this.IncCookie = this._calc.IncCookie.ToString();
+        _cookieClicker.UpgradeAddIncCookie();
+        RaisePropertyChanged(nameof(AddIncCookie));
+        RaisePropertyChanged(nameof(CostAdd));
+        RaisePropertyChanged(nameof(CurrentCookie));
+        RaisePropertyChanged(nameof(CurrentIncCookie));
     }
 
     /// <summary>
     /// 倍率増加ボタンを押された際のコマンドを取得します。
     /// </summary>
-    public DelegateCommand UpgradeMulValueCommand { get; init; }
+    public DelegateCommand UpgradeMultiValueCommand { get; init; }
 
     /// <summary>
     /// 倍率を増加させます。
     /// </summary>
-    private void UpgradeMulValue()
+    private void UpgradeMultiValue()
     {
-        //var nowCookie = 0.0;
-        //var nowMul = 0.0;
-        //var costMul = 0.0;
-        //var incCookie = 0.0;
-        //if (!double.TryParse(this.NowCookie, out nowCookie)) { return; }
-        //if (!double.TryParse(this.NowMul, out nowMul)) { return; }
-        //if (!double.TryParse(this.CostMul, out costMul)) { return; }
-        //if (!double.TryParse(this.IncCookie, out incCookie)) { return; }
-        //this._calc.NowCookie = nowCookie;
-        //this._calc.NowMul = nowMul;
-        //this._calc.CostMul = costMul;
-        //this._calc.IncCookie = incCookie;
-        //this._calc.ExecuteUpgradeMul();
-        //this.NowCookie = this._calc.NowCookie.ToString();
-        //this.NowMul = this._calc.NowMul.ToString();
-        //this.CostMul = this._calc.CostMul.ToString();
-        //this.IncCookie = this._calc.IncCookie.ToString();
+        _cookieClicker.UpgradeMultiIncCookie();
+        RaisePropertyChanged(nameof(MultiIncCookie));
+        RaisePropertyChanged(nameof(CostMul));
+        RaisePropertyChanged(nameof(CurrentCookie));
+        RaisePropertyChanged(nameof(CurrentIncCookie));
     }
 
     #endregion コマンド
