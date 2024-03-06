@@ -8,41 +8,41 @@
         Title="CookieClicker"
         SizeToContent="WidthAndHeight"
         Background="Cornsilk">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="50" />
-            <RowDefinition Height="50" />
-            <RowDefinition Height="50" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150" />
-            <ColumnDefinition Width="80" />
-            <ColumnDefinition Width="80" />
-            <ColumnDefinition Width="80" />
-        </Grid.ColumnDefinitions>
-        
-        <TextBlock Grid.Row="0" Grid.Column="0" Background="Brown"/>
-        <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding NowCookie, UpdateSourceTrigger=PropertyChanged, Mode=Oneway}" IsReadOnly="True" Background="Brown" FontFamily="UD Digi Kyokasho NK-B" TextAlignment="Center" Foreground="White"/>
-        <TextBlock Grid.Row="2" Grid.Column="0" Background="Brown"/>
-        <Button Grid.Row="3" Grid.Column="0" Content="{Binding IncCookie, UpdateSourceTrigger=PropertyChanged, Mode=Oneway}" Command="{Binding CalcNowCommand}" FontFamily="UD Digi Kyokasho NK-B" Margin="10"/>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="50" />
+      <RowDefinition Height="50" />
+      <RowDefinition Height="50" />
+      <RowDefinition Height="50" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="150" />
+      <ColumnDefinition Width="80" />
+      <ColumnDefinition Width="80" />
+      <ColumnDefinition Width="80" />
+    </Grid.ColumnDefinitions>
+
+    <TextBlock Grid.Row="0" Grid.Column="0" Background="Brown"/>
+    <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding CurrentCookie}" IsReadOnly="True" Background="Brown" FontFamily="UD Digi Kyokasho NK-B" TextAlignment="Center" Foreground="White"/>
+    <TextBlock Grid.Row="2" Grid.Column="0" Background="Brown"/>
+    <Button Grid.Row="3" Grid.Column="0" Content="{Binding CurrentIncCookie}" Command="{Binding AddCommand, Mode=OneTime}" FontFamily="UD Digi Kyokasho NK-B" Margin="10"/>
 
 
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding NowAdd, UpdateSourceTrigger=PropertyChanged, Mode=Oneway}" IsReadOnly="True" Margin="12" Height="20"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding NowMul, UpdateSourceTrigger=PropertyChanged, Mode=Oneway}" IsReadOnly="True" Margin="12" Height="20"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding NowSec, UpdateSourceTrigger=PropertyChanged, Mode=Oneway}" IsReadOnly="True" Margin="12" Height="20"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding NowInt, UpdateSourceTrigger=PropertyChanged, Mode=Oneway}" IsReadOnly="True" Margin="12" Height="20"/>
+    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding AddIncCookie}" IsReadOnly="True" Margin="12" Height="20"/>
+    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding MultiIncCookie}" IsReadOnly="True" Margin="12" Height="20"/>
+    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SecIncCookie}" IsReadOnly="True" Margin="12" Height="20"/>
+    <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding IntIncCookie}" IsReadOnly="True" Margin="12" Height="20"/>
 
 
-        <Button Grid.Row="0" Grid.Column="2" Content="+" Command="{Binding UpgradeAdd}" Margin="10"/>
-        <Button Grid.Row="1" Grid.Column="2" Content="*" Command="{Binding UpgradeMul}" Margin="10"/>
-        <Button Grid.Row="2" Grid.Column="2" Content="+ /s" Command="{Binding UpgradeSec}" Margin="10"/>
-        <Button Grid.Row="3" Grid.Column="2" Content="* /s" Command="{Binding UpgradeInt}" Margin="10"/>
+    <Button Grid.Row="0" Grid.Column="2" Content="+" Command="{Binding UpgradeAddValueCommand, Mode=OneTime}" Margin="10"/>
+    <Button Grid.Row="1" Grid.Column="2" Content="*" Command="{Binding UpgradeMulValueCommand, Mode=OneTime}" Margin="10"/>
+    <Button Grid.Row="2" Grid.Column="2" Content="+ /s" Margin="10"/>
+    <Button Grid.Row="3" Grid.Column="2" Content="* /s" Margin="10"/>
 
-        <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding CostAdd, UpdateSourceTrigger=PropertyChanged, Mode=Oneway}" IsReadOnly="True" Margin="12" Height="20"/>
-        <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding CostMul, UpdateSourceTrigger=PropertyChanged, Mode=Oneway}" IsReadOnly="True" Margin="12" Height="20"/>
-        <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding CostSec, UpdateSourceTrigger=PropertyChanged, Mode=Oneway}" IsReadOnly="True" Margin="12" Height="20"/>
-        <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding CostInt, UpdateSourceTrigger=PropertyChanged, Mode=Oneway}" IsReadOnly="True" Margin="12" Height="20"/>
+    <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding CostAdd}" IsReadOnly="True" Margin="12" Height="20"/>
+    <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding CostMul}" IsReadOnly="True" Margin="12" Height="20"/>
+    <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding CostSec}" IsReadOnly="True" Margin="12" Height="20"/>
+    <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding CostInt}" IsReadOnly="True" Margin="12" Height="20"/>
 
-    </Grid>
+  </Grid>
 </Window>

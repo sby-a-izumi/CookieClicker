@@ -1,385 +1,211 @@
 ﻿namespace AIWpfIntroduction.Example.ViewModels;
 
 using AIWpfIntroduction.Example.Models;
+using System.Threading.Tasks.Dataflow;
 
+/// <summary>
+/// MainView に対するデータコンテキストを表します。
+/// </summary>
 internal class MainViewModel : NotificationObject
 {
-    //新しいインスタンスの生成
+    /// <summary>
+    /// 新しいインスタンスを生成します。
+    /// </summary>
     public MainViewModel()
     {
-        this._timer = new GameTimer();
-        this._calc = new Calculator();
+        AddCommand = new DelegateCommand(_ => Add());
+        UpgradeAddValueCommand = new DelegateCommand(_ => UpgaredeAddValue());
+        UpgradeMulValueCommand = new DelegateCommand(_ => UpgradeMulValue());
     }
 
-    #region 各プロパティの取得または設定
-    private string _nowCookie = 0.ToString();
-    //現在値の取得または設定
-    public string NowCookie
+    #region フィールド
+
+    /// <summary>
+    /// クッキークリッカー機能を提供します。
+    /// </summary>
+    private Calculator _calc = new Calculator();
+
+    #endregion フィールド
+
+    #region 公開プロパティ
+
+    private double _currentCookie = 0;
+    /// <summary>
+    /// 現在値を取得します。
+    /// </summary>
+    public double CurrentCookie
     {
-        get { return this._nowCookie; }
-        //値が違う場合更新
-        set
-        {
-            //アップグレード可能かどうか判定する
-            if (SetProperty(ref this._nowCookie, value))
-            {
-                this.UpgradeAdd.RaiseCanExecuteChanged();
-                this.UpgradeMul.RaiseCanExecuteChanged();
-            }
-        }
+        get { return this._currentCookie; }
+        private set { SetProperty(ref this._currentCookie, value); }
     }
     
-
-    private string _incCookie = 1.ToString();
-    //増加値の取得または設定
-    public string IncCookie
+    private double _currentIncCookie = 1;
+    /// <summary>
+    /// 現在の増加量を取得します。
+    /// </summary>
+    public double CurrentIncCookie
     {
-        get { return this._incCookie; }
-        set { SetProperty(ref this._incCookie, value); }
+        get { return this._currentIncCookie; }
+        private set { SetProperty(ref this._currentIncCookie, value); }
     }
 
-    //現在のパラメータ
-
-    private string _nowAdd = 0.ToString();
-    //現在の増加値の増加量
-    public string NowAdd
+    private double _addIncCookie = 0;
+    /// <summary>
+    /// 加算増加量を取得します。
+    /// </summary>
+    public double AddIncCookie
     {
-        get { return this._nowAdd; }
-        set
-        {
-            if (SetProperty(ref this._nowAdd, value))
-            {
-                this.CalcIncCommand.RaiseCanExecuteChanged();
-            }
-        }
+        get { return this._addIncCookie; }
+        private set { SetProperty(ref this._addIncCookie, value); }
     }
 
-    private string _nowMul = 1.0.ToString();
-    //現在の増加値の倍率
-    public string NowMul
+    private double _multiIncCookie = 1;
+    /// <summary>
+    /// 増加量倍率を取得します。
+    /// </summary>
+    public double MultiIncCookie
     {
-        get { return this._nowMul; }
-        set
-        {
-            if (SetProperty(ref this._nowMul, value))
-            {
-                this.CalcIncCommand.RaiseCanExecuteChanged();
-            }
-        }
+        get { return this._multiIncCookie; }
+        private set { SetProperty(ref this._multiIncCookie, value); }
     }
 
-    private string _nowSec = 0.ToString();
-    //現在の毎秒増加量
-    public string NowSec
+    private double _secIncCookie = 1;
+    /// <summary>
+    /// 毎秒増加量を取得します。
+    /// </summary>
+    public double SecIncCookie
     {
-        get { return this._nowSec; }
-        set
-        {
-            if (SetProperty(ref this._nowSec, value))
-            {
-                this.CalcIncCommand.RaiseCanExecuteChanged();
-            }
-        }
+        get { return this._secIncCookie; }
+        private set { SetProperty(ref this._secIncCookie, value); }
     }
 
-    private string _nowInt = 0.ToString();
-    //現在の利息率
-    public string NowInt
+    private double _intIncCookie = 1;
+    /// <summary>
+    /// 利息率を取得します。
+    /// </summary>
+    public double IntIncCookie
     {
-        get { return this._nowInt; }
-        set
-        {
-            if (SetProperty(ref this._nowInt, value))
-            {
-                this.CalcIncCommand.RaiseCanExecuteChanged();
-            }
-        }
+        get { return this._intIncCookie; }
+        private set { SetProperty(ref this._intIncCookie, value); }
     }
 
-    //アップグレード費用
-
-    private string _costAdd = 10.ToString();
-    //増加値の増加量コスト
-    public string CostAdd
+    private double _costAdd = 10;
+    /// <summary>
+    /// 追加コストを取得します。
+    /// </summary>
+    public double CostAdd
     {
         get { return this._costAdd; }
         private set { SetProperty(ref this._costAdd, value); }
     }
 
-    private string _costMul = 20.ToString();
-    //増加値の倍率コスト
-    public string CostMul
+    private double _costMul = 20;
+    /// <summary>
+    /// 倍率をコストを取得します。
+    /// </summary>
+    public double CostMul
     {
         get { return this._costMul; }
         private set { SetProperty(ref this._costMul, value); }
     }
 
-    private string _costSec = 30.ToString();
-    //毎秒増加量のコスト
-    public string CostSec
+    private double _costSec = 30;
+    /// <summary>
+    /// 毎秒コストを取得します。
+    /// </summary>
+    public double CostSec
     {
         get { return this._costSec; }
         private set { SetProperty(ref this._costSec, value); }
     }
 
-    private string _costInt = 100.ToString();
-    //利息率のコスト
-    public string CostInt
+    private double _costInt = 100;
+    /// <summary>
+    /// 利息率をコストを取得します。
+    /// </summary>
+    public double CostInt
     {
         get { return this._costInt; }
         private set { SetProperty(ref this._costInt, value); }
     }
-    #endregion 各プロパティの取得または設定
 
+    #endregion 公開プロパティ
 
-    #region 各コマンドの取得メソッド
+    #region コマンド
 
-    private DelegateCommand _calcNowCommand;
-    //現在値変更コマンドの取得
-    public DelegateCommand CalcNowCommand
-    {
-        get
-        {
-            return this._calcNowCommand ?? (this._calcNowCommand = new DelegateCommand(
-                _ =>
-                {
-                    UpdateNowCookie();
-                },
-                _ =>
-                {
-                    var dummy = 0.0;
-                    if (!double.TryParse(this._nowCookie, out dummy))
-                    {
-                        return false;
-                    }
-                    if (!double.TryParse(this._incCookie, out dummy))
-                    {
-                        return false;
-                    }
-                    return true;
-                }));
-        }
-    }
+    /// <summary>
+    /// 増加ボタンが押された際のコマンドを取得します。
+    /// </summary>
+    public DelegateCommand AddCommand { get; init; }
 
-    private DelegateCommand _calcIncCommand;
-    //増加値変更コマンドの取得
-    public DelegateCommand CalcIncCommand
-    {
-        get
-        {
-            return this._calcIncCommand ?? (this._calcIncCommand = new DelegateCommand(
-                _ =>
-                {
-                    UpdateIncCookie();
-                },
-                _ =>
-                {
-                    var dummy = 0.0;
-                    if (!double.TryParse(this._incCookie, out dummy))
-                    {
-                        return false;
-                    }
-                    if (!double.TryParse(this._nowAdd, out dummy))
-                    {
-                        return false;
-                    }
-                    if (!double.TryParse(this._nowMul, out dummy))
-                    {
-                        return false;
-                    }
-                    return true;
-                }));
-        }
-    }
-
-    private DelegateCommand _upgradeAdd;
-    //増加値の増加量をアップグレードするコマンドの取得
-    public DelegateCommand UpgradeAdd
-    {
-        get
-        {
-            return this._upgradeAdd ?? (this._upgradeAdd = new DelegateCommand(
-                _ =>
-                {
-                    OnAdd();
-                },
-                _ =>
-                {
-                    var dummy = 0.0;
-                    var nowCookie = 0.0;
-                    var costAdd = 0.0;
-                    if (!double.TryParse(this._nowCookie, out nowCookie))
-                    {
-                        return false;
-                    }
-                    if (!double.TryParse(this._nowAdd, out dummy))
-                    {
-                        return false;
-                    }
-                    if (!double.TryParse(this._costAdd, out costAdd))
-                    {
-                        return false;
-                    }
-                    if (!double.TryParse(this._incCookie, out dummy))
-                    {
-                        return false;
-                    }
-                    if (!double.TryParse(this._nowMul, out dummy))
-                    {
-                        return false;
-                    }
-                    // アップグレード条件
-                    if (nowCookie < costAdd)
-                    {
-                        return false;
-                    }
-                    return true;
-                }));
-        }
-    }
-
-    private DelegateCommand _upgradeMul;
-    //増加量の倍率をアップグレードするコマンドの取得
-    public DelegateCommand UpgradeMul
-    {
-        get
-        {
-            return this._upgradeMul ?? (this._upgradeMul = new DelegateCommand(
-                _ =>
-                {
-                    OnMul();
-                },
-                _ =>
-                {
-                    var dummy = 0.0;
-                    var nowCookie = 0.0;
-                    var costMul = 0.0;
-                    if (!double.TryParse(this._nowCookie, out nowCookie))
-                    {
-                        return false;
-                    }
-                    if (!double.TryParse(this._nowMul, out dummy))
-                    {
-                        return false;
-                    }
-                if (!double.TryParse(this._costMul, out costMul))
-                    {
-                        return false;
-                    }
-                    if (!double.TryParse(this._incCookie, out dummy))
-                    {
-                        return false;
-                    }
-
-                    if (nowCookie < costMul)
-                    {
-                        return false;
-                    }
-                    return true;
-                }));
-        }
-    }
-    #endregion 各コマンドの取得メソッド
-
-    #region 各コマンド本体
-    //現在値を変更する
-    private void UpdateNowCookie()
+    /// <summary>
+    /// 現在値を増加させます。
+    /// </summary>
+    public void Add()
     {
         var nowCookie = 0.0;
         var incCookie = 0.0;
-        if(!double.TryParse(this.NowCookie, out nowCookie))
-        {
-            return;
-        }
-        if(!double.TryParse(this.IncCookie, out incCookie))
-        {
-            return;
-        }
         this._calc.NowCookie = nowCookie;
         this._calc.IncCookie = incCookie;
         this._calc.ExecuteCalcNowCookie();
-        this.NowCookie = this._calc.NowCookie.ToString();
+        CurrentCookie = this._calc.NowCookie;
     }
-    
-    //増加値を変更する
-    private void UpdateIncCookie()
+
+    /// <summary>
+    /// 増加値加算ボタンが押された際のコマンドを取得します。
+    /// </summary>
+    public DelegateCommand UpgradeAddValueCommand { get; init; }
+
+    /// <summary>
+    /// 増加値を加算します。
+    /// </summary>
+    private void UpgaredeAddValue()
     {
-        var incCookie = 0.0;
-        var nowAdd = 0.0;
-        var nowMul = 1.0;
-        if(!double.TryParse(this.IncCookie, out incCookie))
-        {
-            return;
-        }
-        if(!double.TryParse(this.NowAdd, out nowAdd))
-        {
-            return;
-        }
-        if(!double.TryParse(this.NowMul, out nowMul))
-        {
-            return;
-        }
-        this._calc.IncCookie = incCookie;
-        this._calc.NowAdd = nowAdd;
-        this._calc.NowMul = nowMul;
-        this._calc.ExecuteCalcIncCookie();
-        this.IncCookie = this._calc.IncCookie.ToString();
+        //var nowCookie = 0.0;
+        //var nowAdd = 0.0;
+        //var costAdd = 0.0;
+        //var incCookie = 0.0;
+        //var nowMul = 0.0;
+        //this._calc.NowCookie = nowCookie;
+        //this._calc.NowAdd = nowAdd;
+        //this._calc.CostAdd = costAdd;
+        //this._calc.IncCookie = incCookie;
+        //this._calc.NowMul = nowMul;
+        //this._calc.ExecuteUpgradeAdd();
+        //this.NowCookie = this._calc.NowCookie.ToString();
+        //this.NowAdd = this._calc.NowAdd.ToString();
+        //this.CostAdd = this._calc.CostAdd.ToString();
+        //this.IncCookie = this._calc.IncCookie.ToString();
     }
 
-    //増加値の増加量をアップグレード
-    private void OnAdd()
+    /// <summary>
+    /// 倍率増加ボタンを押された際のコマンドを取得します。
+    /// </summary>
+    public DelegateCommand UpgradeMulValueCommand { get; init; }
+
+    /// <summary>
+    /// 倍率を増加させます。
+    /// </summary>
+    private void UpgradeMulValue()
     {
-        var nowCookie = 0.0;
-        var nowAdd = 0.0;
-        var costAdd = 0.0;
-        var incCookie = 0.0;
-        var nowMul = 0.0;
-        //コマンド取得の時点で数値以外弾いているが、想定外のトラブルを想定してTryParseで実装
-        if (!double.TryParse(this.NowCookie, out nowCookie)) { return; }
-        if (!double.TryParse(this.NowAdd, out nowAdd)) { return; }
-        if (!double.TryParse(this.CostAdd, out costAdd)) { return; }
-        if (!double.TryParse(this.IncCookie, out incCookie)) { return; }
-        if (!double.TryParse(this.NowMul, out nowMul)) { return; }
-        this._calc.NowCookie = nowCookie;
-        this._calc.NowAdd = nowAdd;
-        this._calc.CostAdd = costAdd;
-        this._calc.IncCookie = incCookie;
-        this._calc.NowMul = nowMul;
-        this._calc.ExecuteUpgradeAdd();
-        this.NowCookie = this._calc.NowCookie.ToString();
-        this.NowAdd = this._calc.NowAdd.ToString();
-        this.CostAdd = this._calc.CostAdd.ToString();
-        this.IncCookie = this._calc.IncCookie.ToString();
-
+        //var nowCookie = 0.0;
+        //var nowMul = 0.0;
+        //var costMul = 0.0;
+        //var incCookie = 0.0;
+        //if (!double.TryParse(this.NowCookie, out nowCookie)) { return; }
+        //if (!double.TryParse(this.NowMul, out nowMul)) { return; }
+        //if (!double.TryParse(this.CostMul, out costMul)) { return; }
+        //if (!double.TryParse(this.IncCookie, out incCookie)) { return; }
+        //this._calc.NowCookie = nowCookie;
+        //this._calc.NowMul = nowMul;
+        //this._calc.CostMul = costMul;
+        //this._calc.IncCookie = incCookie;
+        //this._calc.ExecuteUpgradeMul();
+        //this.NowCookie = this._calc.NowCookie.ToString();
+        //this.NowMul = this._calc.NowMul.ToString();
+        //this.CostMul = this._calc.CostMul.ToString();
+        //this.IncCookie = this._calc.IncCookie.ToString();
     }
 
-    private void OnMul()
-    {
-        var nowCookie = 0.0;
-        var nowMul = 0.0;
-        var costMul = 0.0;
-        var incCookie = 0.0;
-        if (!double.TryParse(this.NowCookie, out nowCookie)) { return; }
-        if (!double.TryParse(this.NowMul, out nowMul)) { return; }
-        if (!double.TryParse(this.CostMul, out costMul)) { return; }
-        if (!double.TryParse(this.IncCookie, out incCookie)) { return; }
-        this._calc.NowCookie = nowCookie;
-        this._calc.NowMul = nowMul;
-        this._calc.CostMul = costMul;
-        this._calc.IncCookie = incCookie;
-        this._calc.ExecuteUpgradeMul();
-        this.NowCookie = this._calc.NowCookie.ToString();
-        this.NowMul = this._calc.NowMul.ToString();
-        this.CostMul = this._calc.CostMul.ToString();
-        this.IncCookie = this._calc.IncCookie.ToString();
-
-    }
-    #endregion 各コマンド本体
-
-    //計算を行うオブジェクト
-    private Calculator _calc;
-    
-    //時間を計測するオブジェクト
-    private GameTimer _timer;
+    #endregion コマンド
 }
-
