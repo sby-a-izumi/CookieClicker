@@ -13,8 +13,8 @@ internal class MainViewModel : NotificationObject
     public MainViewModel()
     {
         AddCommand = new DelegateCommand(_ => Add());
-        UpgradeAddValueCommand = new DelegateCommand(_ => UpgradeAddValue());
-        UpgradeMultiValueCommand = new DelegateCommand(_ => UpgradeMultiValue());
+        UpgradeAddValueCommand = new DelegateCommand(_ => UpgradeAddValue(), _ => CanUpgradeAddValue());
+        UpgradeMultiValueCommand = new DelegateCommand(_ => UpgradeMultiValue(), _ => CanUpgradeMultiValue());
     }
 
     #region フィールド
@@ -94,6 +94,8 @@ internal class MainViewModel : NotificationObject
     {
         _cookieClicker.UpdateCurrentCookie();
         RaisePropertyChanged(nameof(CurrentCookie));
+        UpgradeAddValueCommand.RaiseCanExecuteChanged();
+        UpgradeMultiValueCommand.RaiseCanExecuteChanged();
     }
 
     /// <summary>
@@ -111,6 +113,16 @@ internal class MainViewModel : NotificationObject
         RaisePropertyChanged(nameof(CostAdd));
         RaisePropertyChanged(nameof(CurrentCookie));
         RaisePropertyChanged(nameof(CurrentIncCookie));
+        UpgradeAddValueCommand.RaiseCanExecuteChanged();
+        UpgradeMultiValueCommand.RaiseCanExecuteChanged();
+    }
+
+    /// <summary>
+    /// 増加値加算ボタンの実行可否を返します。
+    /// </summary>
+    private bool CanUpgradeAddValue()
+    {
+        return _cookieClicker.CurrentCookie > _cookieClicker.CostAdd;
     }
 
     /// <summary>
@@ -128,6 +140,17 @@ internal class MainViewModel : NotificationObject
         RaisePropertyChanged(nameof(CostMul));
         RaisePropertyChanged(nameof(CurrentCookie));
         RaisePropertyChanged(nameof(CurrentIncCookie));
+        UpgradeAddValueCommand.RaiseCanExecuteChanged();
+        UpgradeMultiValueCommand.RaiseCanExecuteChanged();
+    }
+
+    /// <summary>
+    /// 倍率増加ボタンの実行可否を返します。
+    /// </summary>
+    /// <returns></returns>
+    private bool CanUpgradeMultiValue()
+    {
+        return _cookieClicker.CurrentCookie > _cookieClicker.CostMul;
     }
 
     #endregion コマンド
