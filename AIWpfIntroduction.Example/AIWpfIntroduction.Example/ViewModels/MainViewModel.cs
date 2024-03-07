@@ -15,6 +15,8 @@ internal class MainViewModel : NotificationObject
         AddCommand = new DelegateCommand(_ => Add());
         UpgradeAddValueCommand = new DelegateCommand(_ => UpgradeAddValue(), _ => CanUpgradeAddValue());
         UpgradeMultiValueCommand = new DelegateCommand(_ => UpgradeMultiValue(), _ => CanUpgradeMultiValue());
+        UpgradeSecValueCommand = new DelegateCommand(_ => UpgradeSecValue(), _ => CanUpgradeSecValue());
+        UpgradeIntValueCommand = new DelegateCommand(_ => UpgradeIntValue(), _ => CanUpgradeIntValue());
     }
 
     #region フィールド
@@ -31,52 +33,57 @@ internal class MainViewModel : NotificationObject
     /// <summary>
     /// 現在値を取得します。
     /// </summary>
-    public double CurrentCookie { get { return _cookieClicker.CurrentCookie; } }
+    public int CurrentCookie { get { return _cookieClicker.CurrentCookie; } }
 
     /// <summary>
     /// 現在の増加量を取得します。
     /// </summary>
-    public double CurrentIncCookie { get { return _cookieClicker.CurrentIncCookie; } }
+    public int CurrentIncCookie { get { return _cookieClicker.CurrentIncCookie; } }
+
+    /// <summary>
+    /// 現在の生産量を取得します。
+    /// </summary>
+    public int CurrentProductCookie { get { return _cookieClicker.CurrentProductCookie; } }
 
     /// <summary>
     /// 加算増加量を取得します。
     /// </summary>
-    public double AddIncCookie { get { return _cookieClicker.AddIncCookie; } }
+    public int AddIncCookie { get { return _cookieClicker.AddIncCookie; } }
 
     /// <summary>
     /// 増加量倍率を取得します。
     /// </summary>
-    public double MultiIncCookie { get { return _cookieClicker.MultiIncCookie; } }
+    public int MultiIncCookie { get { return _cookieClicker.MultiIncCookie; } }
 
     /// <summary>
     /// 毎秒増加量を取得します。
     /// </summary>
-    public double SecIncCookie { get { return _cookieClicker.SecIncCookie; } }
+    public int SecIncCookie { get { return _cookieClicker.SecIncCookie; } }
 
     /// <summary>
-    /// 利息率を取得します。
+    /// 毎秒倍率を取得します。
     /// </summary>
-    public double IntIncCookie { get { return _cookieClicker.IntIncCookie; } }
+    public int IntIncCookie { get { return _cookieClicker.IntIncCookie; } }
 
     /// <summary>
     /// 加算コストを取得します。
     /// </summary>
-    public double CostAdd { get { return _cookieClicker.CostAdd; } }
+    public int CostAdd { get { return _cookieClicker.CostAdd; } }
 
     /// <summary>
     /// 倍率コストを取得します。
     /// </summary>
-    public double CostMul { get { return _cookieClicker.CostMul; } }
+    public int CostMul { get { return _cookieClicker.CostMul; } }
 
     /// <summary>
     /// 毎秒コストを取得します。
     /// </summary>
-    public double CostSec { get { return _cookieClicker.CostSec; } }
+    public int CostSec { get { return _cookieClicker.CostSec; } }
 
     /// <summary>
-    /// 利息率 コストを取得します。
+    /// 毎秒倍率コストを取得します。
     /// </summary>
-    public double CostInt { get { return _cookieClicker.CostInt; } }
+    public int CostInt { get { return _cookieClicker.CostInt; } }
 
     #endregion 公開プロパティ
 
@@ -96,6 +103,8 @@ internal class MainViewModel : NotificationObject
         RaisePropertyChanged(nameof(CurrentCookie));
         UpgradeAddValueCommand.RaiseCanExecuteChanged();
         UpgradeMultiValueCommand.RaiseCanExecuteChanged();
+        UpgradeSecValueCommand.RaiseCanExecuteChanged();
+        UpgradeIntValueCommand.RaiseCanExecuteChanged();
     }
 
     /// <summary>
@@ -115,6 +124,8 @@ internal class MainViewModel : NotificationObject
         RaisePropertyChanged(nameof(CurrentIncCookie));
         UpgradeAddValueCommand.RaiseCanExecuteChanged();
         UpgradeMultiValueCommand.RaiseCanExecuteChanged();
+        UpgradeSecValueCommand.RaiseCanExecuteChanged();
+        UpgradeIntValueCommand.RaiseCanExecuteChanged();
     }
 
     /// <summary>
@@ -142,6 +153,8 @@ internal class MainViewModel : NotificationObject
         RaisePropertyChanged(nameof(CurrentIncCookie));
         UpgradeAddValueCommand.RaiseCanExecuteChanged();
         UpgradeMultiValueCommand.RaiseCanExecuteChanged();
+        UpgradeSecValueCommand.RaiseCanExecuteChanged();
+        UpgradeIntValueCommand.RaiseCanExecuteChanged();
     }
 
     /// <summary>
@@ -151,6 +164,46 @@ internal class MainViewModel : NotificationObject
     private bool CanUpgradeMultiValue()
     {
         return _cookieClicker.CurrentCookie > _cookieClicker.CostMul;
+    }
+
+    public DelegateCommand UpgradeSecValueCommand { get; init; }
+
+    private void UpgradeSecValue()
+    {
+        _cookieClicker.UpgradeSecIncCookie();
+        RaisePropertyChanged(nameof(SecIncCookie));
+        RaisePropertyChanged(nameof(CostSec));
+        RaisePropertyChanged(nameof(CurrentCookie));
+        RaisePropertyChanged(nameof(CurrentProductCookie));
+        UpgradeAddValueCommand.RaiseCanExecuteChanged();
+        UpgradeMultiValueCommand.RaiseCanExecuteChanged();
+        UpgradeSecValueCommand.RaiseCanExecuteChanged();
+        UpgradeIntValueCommand.RaiseCanExecuteChanged();
+    }
+
+    private bool CanUpgradeSecValue()
+    {
+        return _cookieClicker.CurrentCookie > _cookieClicker.CostSec;
+    }
+
+    public DelegateCommand UpgradeIntValueCommand { get; init; }
+
+    private void UpgradeIntValue()
+    {
+        _cookieClicker.UpgradeIntProductCookie();
+        RaisePropertyChanged(nameof(IntIncCookie));
+        RaisePropertyChanged(nameof(CostInt));
+        RaisePropertyChanged(nameof(CurrentCookie));
+        RaisePropertyChanged(nameof(CurrentProductCookie));
+        UpgradeAddValueCommand.RaiseCanExecuteChanged();
+        UpgradeMultiValueCommand.RaiseCanExecuteChanged();
+        UpgradeSecValueCommand.RaiseCanExecuteChanged();
+        UpgradeIntValueCommand.RaiseCanExecuteChanged();
+    }
+
+    private bool CanUpgradeIntValue()
+    {
+        return _cookieClicker.CurrentCookie > _cookieClicker.CostInt;
     }
 
     #endregion コマンド

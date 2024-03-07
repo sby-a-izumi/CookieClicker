@@ -24,7 +24,7 @@
 
     <TextBlock Grid.Row="0" Grid.Column="0" Background="Brown"/>
     <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding CurrentCookie, Mode=OneWay}" IsReadOnly="True" Background="Brown" FontFamily="UD Digi Kyokasho NK-B" TextAlignment="Center" Foreground="White"/>
-    <TextBlock Grid.Row="2" Grid.Column="0" Background="Brown"/>
+    <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding CurrentProductCookie, StringFormat=CpS：{0}, Mode=OneWay}" FontFamily="UD Digi Kyokasho NK-B" TextAlignment="Center" Foreground="White" Background="Brown"/>
     <Button Grid.Row="3" Grid.Column="0" Content="{Binding CurrentIncCookie}" Command="{Binding AddCommand, Mode=OneTime}" FontFamily="UD Digi Kyokasho NK-B" Margin="10"/>
 
 
@@ -36,8 +36,8 @@
 
     <Button Grid.Row="0" Grid.Column="2" Content="+" Command="{Binding UpgradeAddValueCommand, Mode=OneTime}" Margin="10"/>
     <Button Grid.Row="1" Grid.Column="2" Content="*" Command="{Binding UpgradeMultiValueCommand, Mode=OneTime}" Margin="10"/>
-    <Button Grid.Row="2" Grid.Column="2" Content="+ /s" Margin="10"/>
-    <Button Grid.Row="3" Grid.Column="2" Content="* /s" Margin="10"/>
+    <Button Grid.Row="2" Grid.Column="2" Content="+ /s" Command="{Binding UpgradeSecValueCommand, Mode=OneTime}" Margin="10"/>
+    <Button Grid.Row="3" Grid.Column="2" Content="* /s" Command="{Binding UpgradeIntValueCommand, Mode=OneTime}" Margin="10"/>
 
     <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding CostAdd, Mode=OneWay}" IsReadOnly="True" Margin="12" Height="20"/>
     <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding CostMul, Mode=OneWay}" IsReadOnly="True" Margin="12" Height="20"/>
