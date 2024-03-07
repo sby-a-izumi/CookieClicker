@@ -16,7 +16,9 @@ namespace AIWpfIntroduction.Example.ViewModels
     /// </summary>
     internal class MainViewModel : NotificationObject
     {
-        //新しいインスタンスの生成
+        /// <summary>
+        /// MainViewModelコンストラクタ
+        /// </summary>
         public MainViewModel()
         {
             
@@ -24,20 +26,11 @@ namespace AIWpfIntroduction.Example.ViewModels
             this._cookie.NowCookieChanged += OnNowCookieChanged;
         }
 
-        #region 各プロパティの取得または設定
-       
         /// <summary>
-        /// 現在値の取得または設定
+        /// NowCookieChanged イベントハンドラ
         /// </summary>
-        public string NowCookie
-        {
-            // Event
-
-            get { return this._cookie.NowCookie; }
-            // 値が違う場合更新
-            // モデルで処理したものを
-        }
-
+        /// <param name="obj">イベント発行元</param>
+        /// <param name="args">イベント引数</param>
         private void OnNowCookieChanged(object? obj, EventArgs args)
         {
             RaisePropertyChanged(null);
@@ -45,105 +38,86 @@ namespace AIWpfIntroduction.Example.ViewModels
             this.UpgradeMul.RaiseCanExecuteChanged();
         }
 
+        #region Modelのインスタンスから各プロパティを取得
 
-        private string _incCookie = 1.ToString();
-        //増加値の取得または設定
+        /// <summary>
+        /// 現在値の取得
+        /// </summary>
+        public string NowCookie
+        {
+            get { return this._cookie.NowCookie; }
+        }
+
+        /// <summary>
+        /// 増加値の取得
+        /// </summary>
         public string IncCookie
         {
-            get { return this._incCookie; }
-            set { SetProperty(ref this._incCookie, value); }
+            get { return this._cookie.IncCookie; }
         }
 
-        //現在のパラメータ
-
-        private string _nowAdd = 0.ToString();
-        //現在の増加値の増加量
+        /// <summary>
+        /// 増加値の増加量の取得
+        /// </summary>
         public string NowAdd
         {
-            get { return this._nowAdd; }
-            set
-            {
-                if (SetProperty(ref this._nowAdd, value))
-                {
-                    this.CalcIncCommand.RaiseCanExecuteChanged();
-                }
-            }
+            get { return this._cookie.IncCookie; }
         }
 
-        private string _nowMul = 1.0.ToString();
-        //現在の増加値の倍率
+        /// <summary>
+        /// 増加値の倍率の取得
+        /// </summary>
         public string NowMul
         {
-            get { return this._nowMul; }
-            set
-            {
-                if (SetProperty(ref this._nowMul, value))
-                {
-                    this.CalcIncCommand.RaiseCanExecuteChanged();
-                }
-            }
+            get { return this._cookie.IncCookie; }
         }
 
-        private string _nowSec = 0.ToString();
-        //現在の毎秒増加量
+        /// <summary>
+        /// 生産量の取得
+        /// </summary>
         public string NowSec
         {
-            get { return this._nowSec; }
-            set
-            {
-                if (SetProperty(ref this._nowSec, value))
-                {
-                    this.CalcIncCommand.RaiseCanExecuteChanged();
-                }
-            }
+            get { return this._cookie.IncCookie; }
         }
 
-        private string _nowInt = 0.ToString();
-        //現在の利息率
+        /// <summary>
+        /// 利息率の取得
+        /// </summary>
         public string NowInt
         {
-            get { return this._nowInt; }
-            set
-            {
-                if (SetProperty(ref this._nowInt, value))
-                {
-                    this.CalcIncCommand.RaiseCanExecuteChanged();
-                }
-            }
+            get { return this._cookie.IncCookie; }
         }
 
-        //アップグレード費用
-
-        private string _costAdd = 10.ToString();
-        //増加値の増加量コスト
+        /// <summary>
+        /// 増加量コスト
+        /// </summary>
         public string CostAdd
         {
-            get { return this._costAdd; }
-            private set { SetProperty(ref this._costAdd, value); }
+            get { return this._cookie.IncCookie; }
         }
 
-        private string _costMul = 20.ToString();
-        //増加値の倍率コスト
+        /// <summary>
+        /// 倍率コスト
+        /// </summary>
         public string CostMul
         {
-            get { return this._costMul; }
-            private set { SetProperty(ref this._costMul, value); }
+            get { return this._cookie.IncCookie; }
         }
 
-        private string _costSec = 30.ToString();
-        //毎秒増加量のコスト
+        /// <summary>
+        /// 生産量コスト
+        /// </summary>
         public string CostSec
         {
-            get { return this._costSec; }
-            private set { SetProperty(ref this._costSec, value); }
+            get { return this._cookie.IncCookie; }
         }
 
-        private string _costInt = 100.ToString();
-        //利息率のコスト
+        /// <summary>
+        /// 利息率コスト
+        /// </summary>
         public string CostInt
         {
-            get { return this._costInt; }
-            private set { SetProperty(ref this._costInt, value); }
+            get { return this._cookie.IncCookie; }
         }
         #endregion 各プロパティの取得または設定
 
@@ -169,7 +143,7 @@ namespace AIWpfIntroduction.Example.ViewModels
                         {
                             return false;
                         }
-                        if (!double.TryParse(this._incCookie, out dummy))
+                        if (!double.TryParse(this.IncCookie, out dummy))
                         {
                             return false;
                         }
@@ -192,15 +166,15 @@ namespace AIWpfIntroduction.Example.ViewModels
                     _ =>
                     {
                         var dummy = 0.0;
-                        if (!double.TryParse(this._incCookie, out dummy))
+                        if (!double.TryParse(this.IncCookie, out dummy))
                         {
                             return false;
                         }
-                        if (!double.TryParse(this._nowAdd, out dummy))
+                        if (!double.TryParse(this.NowAdd, out dummy))
                         {
                             return false;
                         }
-                        if (!double.TryParse(this._nowMul, out dummy))
+                        if (!double.TryParse(this.NowMul, out dummy))
                         {
                             return false;
                         }
@@ -229,19 +203,19 @@ namespace AIWpfIntroduction.Example.ViewModels
                         {
                             return false;
                         }
-                        if (!double.TryParse(this._nowAdd, out dummy))
+                        if (!double.TryParse(this.NowAdd, out dummy))
                         {
                             return false;
                         }
-                        if (!double.TryParse(this._costAdd, out costAdd))
+                        if (!double.TryParse(this.CostAdd, out costAdd))
                         {
                             return false;
                         }
-                        if (!double.TryParse(this._incCookie, out dummy))
+                        if (!double.TryParse(this.IncCookie, out dummy))
                         {
                             return false;
                         }
-                        if (!double.TryParse(this._nowMul, out dummy))
+                        if (!double.TryParse(this.NowMul, out dummy))
                         {
                             return false;
                         }
@@ -275,15 +249,15 @@ namespace AIWpfIntroduction.Example.ViewModels
                         {
                             return false;
                         }
-                        if (!double.TryParse(this._nowMul, out dummy))
+                        if (!double.TryParse(this.NowMul, out dummy))
                         {
                             return false;
                         }
-                    if (!double.TryParse(this._costMul, out costMul))
+                    if (!double.TryParse(this.CostMul, out costMul))
                         {
                             return false;
                         }
-                        if (!double.TryParse(this._incCookie, out dummy))
+                        if (!double.TryParse(this.IncCookie, out dummy))
                         {
                             return false;
                         }

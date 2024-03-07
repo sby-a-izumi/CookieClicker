@@ -19,13 +19,14 @@ namespace AIWpfIntroduction.Example.Models
         }
         #region Cookieクラスの変数
         private string _nowCookie = "0";
-        //現在値
+        /// <summary>
+        /// 現在値のプロパティ
+        /// </summary>
         public string NowCookie
         {
             get { return this._nowCookie; }
-            set {
+            private set {
                 this._nowCookie = value;
-                
             }
         }
 
@@ -64,7 +65,7 @@ namespace AIWpfIntroduction.Example.Models
             set { this._nowMul = value; }
         }
 
-        private string _nowSec = "0";
+        private string _nowSec = "1.0";
         //適応された毎秒ごとの増加値
         public string NowSec
         {
@@ -115,7 +116,7 @@ namespace AIWpfIntroduction.Example.Models
         #region 各コマンド本体
         private void AddCookiePerSecond()
         {
-            this.NowCookie = (int.Parse(this.NowCookie) + 1).ToString();
+            this.NowCookie = (int.Parse(this.NowCookie) + double.Parse(this.NowSec)).ToString();
             RaiseNowCookieChanged();
         }
 

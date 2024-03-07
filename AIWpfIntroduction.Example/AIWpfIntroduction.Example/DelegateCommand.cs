@@ -29,12 +29,12 @@ namespace AIWpfIntroduction.Example
 
         #region ICommand の実装
         //コマンドが実行可能かどうかの判別処理
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object? parameter)
         {
             return (this._canExecute != null) ? this._canExecute(parameter) : true;
         }
         //実行可能かどうかの判別処理の関する状態が変更された時に発生
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler? CanExecuteChanged;
 
         public void RaiseCanExecuteChanged()
         {
@@ -43,7 +43,7 @@ namespace AIWpfIntroduction.Example
         }
 
         //コマンドが実行されたときの処理
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
             if(this._execute != null)
                 this._execute(parameter);
