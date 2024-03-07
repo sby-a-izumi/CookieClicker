@@ -17,6 +17,11 @@ internal class MainViewModel : NotificationObject
         UpgradeMultiValueCommand = new DelegateCommand(_ => UpgradeMultiValue(), _ => CanUpgradeMultiValue());
         UpgradeSecValueCommand = new DelegateCommand(_ => UpgradeSecValue(), _ => CanUpgradeSecValue());
         UpgradeIntValueCommand = new DelegateCommand(_ => UpgradeIntValue(), _ => CanUpgradeIntValue());
+        _cookieClicker.CurrentCookieChanged += (s, e) =>
+        {
+            RaiseAllPropertyChanged();
+            RaiseCanExcuteChanged();
+        };
     }
 
     #region フィールド
@@ -100,11 +105,8 @@ internal class MainViewModel : NotificationObject
     public void Add()
     {
         _cookieClicker.UpdateCurrentCookie();
-        RaisePropertyChanged(nameof(CurrentCookie));
-        UpgradeAddValueCommand.RaiseCanExecuteChanged();
-        UpgradeMultiValueCommand.RaiseCanExecuteChanged();
-        UpgradeSecValueCommand.RaiseCanExecuteChanged();
-        UpgradeIntValueCommand.RaiseCanExecuteChanged();
+        RaiseAllPropertyChanged();
+        RaiseCanExcuteChanged();
     }
 
     /// <summary>
@@ -118,19 +120,14 @@ internal class MainViewModel : NotificationObject
     private void UpgradeAddValue()
     {
         _cookieClicker.UpgradeAddIncCookie();
-        RaisePropertyChanged(nameof(AddIncCookie));
-        RaisePropertyChanged(nameof(CostAdd));
-        RaisePropertyChanged(nameof(CurrentCookie));
-        RaisePropertyChanged(nameof(CurrentIncCookie));
-        UpgradeAddValueCommand.RaiseCanExecuteChanged();
-        UpgradeMultiValueCommand.RaiseCanExecuteChanged();
-        UpgradeSecValueCommand.RaiseCanExecuteChanged();
-        UpgradeIntValueCommand.RaiseCanExecuteChanged();
+        RaiseAllPropertyChanged();
+        RaiseCanExcuteChanged();
     }
 
     /// <summary>
     /// 増加値加算ボタンの実行可否を返します。
     /// </summary>
+    /// <returns>実行可否を返します。</returns>
     private bool CanUpgradeAddValue()
     {
         return _cookieClicker.CurrentCookie > _cookieClicker.CostAdd;
@@ -147,64 +144,81 @@ internal class MainViewModel : NotificationObject
     private void UpgradeMultiValue()
     {
         _cookieClicker.UpgradeMultiIncCookie();
-        RaisePropertyChanged(nameof(MultiIncCookie));
-        RaisePropertyChanged(nameof(CostMul));
-        RaisePropertyChanged(nameof(CurrentCookie));
-        RaisePropertyChanged(nameof(CurrentIncCookie));
-        UpgradeAddValueCommand.RaiseCanExecuteChanged();
-        UpgradeMultiValueCommand.RaiseCanExecuteChanged();
-        UpgradeSecValueCommand.RaiseCanExecuteChanged();
-        UpgradeIntValueCommand.RaiseCanExecuteChanged();
+        RaiseAllPropertyChanged();
+        RaiseCanExcuteChanged();
     }
 
     /// <summary>
     /// 倍率増加ボタンの実行可否を返します。
     /// </summary>
-    /// <returns></returns>
+    /// <returns>実行可否を返します。</returns>
     private bool CanUpgradeMultiValue()
     {
         return _cookieClicker.CurrentCookie > _cookieClicker.CostMul;
     }
 
+    /// <summary>
+    /// 毎秒増加ボタンを押された際のコマンドを取得します。
+    /// </summary>
     public DelegateCommand UpgradeSecValueCommand { get; init; }
 
+    /// <summary>
+    /// 毎秒増加量を増加させます。
+    /// </summary>
     private void UpgradeSecValue()
     {
         _cookieClicker.UpgradeSecIncCookie();
-        RaisePropertyChanged(nameof(SecIncCookie));
-        RaisePropertyChanged(nameof(CostSec));
-        RaisePropertyChanged(nameof(CurrentCookie));
-        RaisePropertyChanged(nameof(CurrentProductCookie));
-        UpgradeAddValueCommand.RaiseCanExecuteChanged();
-        UpgradeMultiValueCommand.RaiseCanExecuteChanged();
-        UpgradeSecValueCommand.RaiseCanExecuteChanged();
-        UpgradeIntValueCommand.RaiseCanExecuteChanged();
+        RaiseAllPropertyChanged();
+        RaiseCanExcuteChanged();
     }
 
+    /// <summary>
+    /// 毎秒増加ボタンの実行可否を返します。
+    /// </summary>
+    /// <returns>実行可否を返します。</returns>
     private bool CanUpgradeSecValue()
     {
         return _cookieClicker.CurrentCookie > _cookieClicker.CostSec;
     }
 
+    /// <summary>
+    /// 毎秒倍率増加ボタンを押された際のコマンドを取得します。
+    /// </summary>
     public DelegateCommand UpgradeIntValueCommand { get; init; }
 
+    /// <summary>
+    /// 毎秒倍率を増加させます。
+    /// </summary>
     private void UpgradeIntValue()
     {
         _cookieClicker.UpgradeIntProductCookie();
-        RaisePropertyChanged(nameof(IntIncCookie));
-        RaisePropertyChanged(nameof(CostInt));
-        RaisePropertyChanged(nameof(CurrentCookie));
-        RaisePropertyChanged(nameof(CurrentProductCookie));
-        UpgradeAddValueCommand.RaiseCanExecuteChanged();
-        UpgradeMultiValueCommand.RaiseCanExecuteChanged();
-        UpgradeSecValueCommand.RaiseCanExecuteChanged();
-        UpgradeIntValueCommand.RaiseCanExecuteChanged();
+        RaiseAllPropertyChanged();
+        RaiseCanExcuteChanged();
     }
 
+    /// <summary>
+    /// 毎秒倍率増加ボタンの実行可否を返します。
+    /// </summary>
+    /// <returns>実行可否を返します。</returns>
     private bool CanUpgradeIntValue()
     {
         return _cookieClicker.CurrentCookie > _cookieClicker.CostInt;
     }
 
     #endregion コマンド
+
+    #region 非公開メソッド
+
+    /// <summary>
+    /// コマンドの実行可否の変更を通知します。
+    /// </summary>
+    private void RaiseCanExcuteChanged()
+    {
+        UpgradeAddValueCommand.RaiseCanExecuteChanged();
+        UpgradeMultiValueCommand.RaiseCanExecuteChanged();
+        UpgradeSecValueCommand.RaiseCanExecuteChanged();
+        UpgradeIntValueCommand.RaiseCanExecuteChanged();
+    }
+
+    #endregion 非公開メソッド
 }

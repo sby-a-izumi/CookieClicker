@@ -1,7 +1,32 @@
-﻿namespace AIWpfIntroduction.Example.Models;
+﻿using System;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
-internal class CookieClicker
+namespace AIWpfIntroduction.Example.Models;
+
+/// <summary>
+/// クッキークリッカー機能を提供します。
+/// </summary>
+internal class CookieClicker : IDisposable
 {
+    /// <summary>
+    /// 新しいインスタンスを生成します。
+    /// </summary>
+    public CookieClicker()
+    {
+        ProductCookieAsync();
+    }
+
+    #region フィールド
+
+    /// <summary>
+    /// 非同期タスク制御機能です。
+    /// </summary>
+    private CancellationTokenSource _cancellationTokenSource = new ();
+
+    #endregion フィールド
+
     #region 公開プロパティ
 
     /// <summary>
@@ -69,6 +94,7 @@ internal class CookieClicker
     public void UpdateCurrentCookie()
     {
         CurrentCookie += CurrentIncCookie;
+        RaiseCurrentCookieChanged();
     }
 
     /// <summary>
@@ -120,6 +146,34 @@ internal class CookieClicker
     #region 非公開メソッド
 
     /// <summary>
+    /// 毎秒生産します。
+    /// </summary>
+    private void ProductCookieAsync()
+    {
+        // このメソッド自体を async にするとコンストラクタで呼び出せない
+        Task.Run(async () =>
+        {
+            try
+            {
+                while (_cancellationTokenSource.Token.IsCancellationRequested is false)
+                {
+                    CurrentCookie += CurrentProductCookie;
+                    RaiseCurrentCookieChanged();
+                    await Task.Delay(1000);
+                }
+            }
+            catch (Exception)
+            {
+                // 例外処理
+            }
+            finally
+            {
+                _cancellationTokenSource.Dispose();
+            }
+        }, _cancellationTokenSource.Token);
+    }
+
+    /// <summary>
     /// 増加量を更新します。
     /// </summary>
     private void UpdateCurrentIncCookie()
@@ -127,10 +181,42 @@ internal class CookieClicker
         CurrentIncCookie = AddIncCookie * MultiIncCookie;
     }
 
+    /// <summary>
+    /// 生産量を更新します。
+    /// </summary>
     private void UpdateCurrentProductCookie()
     {
         CurrentProductCookie = SecIncCookie * IntIncCookie;
     }
 
     #endregion 非公開メソッド
+
+    #region イベント
+
+    /// <summary>
+    /// 現在値が変更されたときに発生するイベントです。
+    /// </summary>
+    public event EventHandler? CurrentCookieChanged;
+
+    /// <summary>
+    /// CurrentCookieChanged イベントを発行します。
+    /// </summary>
+    private void RaiseCurrentCookieChanged()
+    {
+        App.Current.Dispatcher.BeginInvoke(() => CurrentCookieChanged?.Invoke(this, EventArgs.Empty));
+    }
+
+    #endregion イベント
+
+    #region IDispose
+
+    /// <summary>
+    /// リソースを解放します。
+    /// </summary>
+    public void Dispose()
+    {
+        _cancellationTokenSource.Dispose();
+    }
+
+    #endregion IDispose
 }

@@ -30,5 +30,11 @@ namespace AIWpfIntroduction.Example
             return true;
         }
         #endregion INotifyPropertyChanged の実装
+
+        protected void RaiseAllPropertyChanged()
+        {
+            var h = this.PropertyChanged;
+            if (h != null) h(this, new PropertyChangedEventArgs(null));
+        }
     }
 }
