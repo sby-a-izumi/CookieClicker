@@ -13,7 +13,7 @@ namespace AIWpfIntroduction.Example
     {
         #region InotifyPropertyChanged の実装
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void RaisePropertyChanged([CallerMemberName]string? propertyName = null)
         {
@@ -21,7 +21,7 @@ namespace AIWpfIntroduction.Example
             if (h != null) h(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected bool SetProperty<T>(ref T target, T value, [CallerMemberName]string propertyName = null)
+        protected bool SetProperty<T>(ref T target, T value, [CallerMemberName]string? propertyName = null)
         {
             if (Equals(target, value))
                 return false;
