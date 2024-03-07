@@ -23,12 +23,12 @@ namespace AIWpfIntroduction.Example.Models
             get { return this._nowCookie; }
             set {
                 this._nowCookie = value;
-                RaiseNowCookieChanged();
+                
             }
         }
 
         public event EventHandler? NowCookieChanged;
-
+        
         private void RaiseNowCookieChanged()
         {
             var h = NowCookieChanged;

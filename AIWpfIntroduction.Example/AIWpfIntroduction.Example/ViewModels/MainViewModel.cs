@@ -40,7 +40,7 @@ namespace AIWpfIntroduction.Example.ViewModels
 
         private void OnNowCookieChanged(object? obj, EventArgs args)
         {
-            RaisePropertyChanged(nameof(NowCookie));
+            RaisePropertyChanged();
             this.UpgradeAdd.RaiseCanExecuteChanged();
             this.UpgradeMul.RaiseCanExecuteChanged();
         }
@@ -160,6 +160,7 @@ namespace AIWpfIntroduction.Example.ViewModels
                     _ =>
                     {
                         this._cookie.UpdateNowCookie();
+                        RaisePropertyChanged(null);
                     },
                     _ =>
                     {

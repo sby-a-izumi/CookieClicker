@@ -15,7 +15,7 @@ namespace AIWpfIntroduction.Example
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void RaisePropertyChanged([CallerMemberName]string propertyName = null)
+        protected void RaisePropertyChanged([CallerMemberName]string? propertyName = null)
         {
             var h = this.PropertyChanged;
             if (h != null) h(this, new PropertyChangedEventArgs(propertyName));
