@@ -61,7 +61,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// </summary>
         public string NowAdd
         {
-            get { return this._cookie.IncCookie; }
+            get { return this._cookie.NowAdd; }
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// </summary>
         public string NowMul
         {
-            get { return this._cookie.IncCookie; }
+            get { return this._cookie.NowMul; }
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// </summary>
         public string NowSec
         {
-            get { return this._cookie.IncCookie; }
+            get { return this._cookie.NowSec; }
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// </summary>
         public string NowInt
         {
-            get { return this._cookie.IncCookie; }
+            get { return this._cookie.NowInt; }
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// </summary>
         public string CostAdd
         {
-            get { return this._cookie.IncCookie; }
+            get { return this._cookie.CostAdd; }
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// </summary>
         public string CostMul
         {
-            get { return this._cookie.IncCookie; }
+            get { return this._cookie.CostMul; }
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// </summary>
         public string CostSec
         {
-            get { return this._cookie.IncCookie; }
+            get { return this._cookie.CostSec; }
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// </summary>
         public string CostInt
         {
-            get { return this._cookie.IncCookie; }
+            get { return this._cookie.CostInt; }
         }
         #endregion 各プロパティの取得または設定
 
