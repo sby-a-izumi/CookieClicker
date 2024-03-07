@@ -14,7 +14,7 @@ namespace AIWpfIntroduction.Example.Models
         public Cookie()
         {
             //this._timer = new GameTimer(() => App.Current.Dispatcher.BeginInvoke((Action)(() => AddCookiePerSecond())));
-            this._timer = new GameTimer(() =>AddCookiePerSecond());
+            this._timer = new GameTimer(() => App.Current.Dispatcher.Invoke(()=> AddCookiePerSecond()));
             this._calc = new Calculator();
         }
         #region Cookieクラスの変数
