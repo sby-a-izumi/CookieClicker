@@ -11,7 +11,9 @@ namespace AIWpfIntroduction.Example.ViewModels
     using AIWpfIntroduction.Example.Models;
     using System.Security.Policy;
     using System.Windows.Media.Animation;
-
+    /// <summary>
+    /// MainViewに対するデータコンテキスト
+    /// </summary>
     internal class MainViewModel : NotificationObject
     {
         //新しいインスタンスの生成
@@ -19,15 +21,21 @@ namespace AIWpfIntroduction.Example.ViewModels
         {
             this._timer = new GameTimer();
             this._cookie = new Cookie();
+            this._cookie.NowCookieChanged += testmethod;
         }
 
         #region 各プロパティの取得または設定
         private string _nowCookie = 0.ToString();
-        //現在値の取得または設定
+        /// <summary>
+        /// 現在値の取得または設定
+        /// </summary>
         public string NowCookie
         {
+            // Event
+
             get { return this._nowCookie; }
-            //値が違う場合更新
+            // 値が違う場合更新
+            // モデルで処理したものを
             set
             {
                 if (SetProperty(ref this._nowCookie, value))
@@ -37,7 +45,12 @@ namespace AIWpfIntroduction.Example.ViewModels
                 }
             }
         }
-        
+
+        private void testmethod(object? obj, EventArgs args)
+        {
+            this.NowCookie = this._cookie.NowCookie;
+        }
+
 
         private string _incCookie = 1.ToString();
         //増加値の取得または設定

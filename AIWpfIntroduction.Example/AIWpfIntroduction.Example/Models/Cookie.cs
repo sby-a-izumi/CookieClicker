@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace AIWpfIntroduction.Example.Models
 {
     using AIWpfIntroduction.Example.ViewModels;
+    using System.Security.Cryptography.X509Certificates;
+
     class Cookie
     {
         public Cookie()
@@ -19,9 +21,23 @@ namespace AIWpfIntroduction.Example.Models
         public string NowCookie
         {
             get { return this._nowCookie; }
-            set { this._nowCookie = value; }
+            set {
+                this._nowCookie = value;
+                RaiseNowCookieChanged();
+            }
         }
 
+        public event EventHandler? NowCookieChanged;
+
+        private void RaiseNowCookieChanged()
+        {
+            var h = NowCookieChanged;
+            if (h != null)
+            {
+                h(this, EventArgs.Empty);
+            }
+        }
+        
         private string _incCookie = "1";
         //ボタンを押すごとに増加する値
         public string IncCookie
