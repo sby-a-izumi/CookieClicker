@@ -8,6 +8,7 @@ using System.Windows;
 
 namespace AIWpfIntroduction.Example
 {
+    using System.Threading;
     using System.Windows;
     using AIWpfIntroduction.Example.ViewModels;
     using AIWpfIntroduction.Example.Views;
@@ -18,6 +19,7 @@ namespace AIWpfIntroduction.Example
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine(Thread.CurrentThread.ManagedThreadId);
             base.OnStartup(e);
 
             var w = new MainView();

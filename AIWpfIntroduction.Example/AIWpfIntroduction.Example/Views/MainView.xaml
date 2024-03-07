@@ -28,7 +28,7 @@
         <Button Grid.Row="3" Grid.Column="0" Content="{Binding IncCookie, UpdateSourceTrigger=PropertyChanged, Mode=Oneway}" Command="{Binding CalcNowCommand}" FontFamily="UD Digi Kyokasho NK-B" Margin="10"/>
 
 
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding NowAdd, UpdateSourceTrigger=PropertyChanged, Mode=Oneway}" IsReadOnly="True" Margin="12" Height="20"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding NowAdd, UpdateSourceTrigger=PropertyChanged, Mode=Oneway}" IsReadOnly="True" Margin="10,15,14,15" Height="20"/>
         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding NowMul, UpdateSourceTrigger=PropertyChanged, Mode=Oneway}" IsReadOnly="True" Margin="12" Height="20"/>
         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding NowSec, UpdateSourceTrigger=PropertyChanged, Mode=Oneway}" IsReadOnly="True" Margin="12" Height="20"/>
         <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding NowInt, UpdateSourceTrigger=PropertyChanged, Mode=Oneway}" IsReadOnly="True" Margin="12" Height="20"/>

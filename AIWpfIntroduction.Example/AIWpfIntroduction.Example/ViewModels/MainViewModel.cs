@@ -19,7 +19,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         //新しいインスタンスの生成
         public MainViewModel()
         {
-            this._timer = new GameTimer();
+            
             this._cookie = new Cookie();
             this._cookie.NowCookieChanged += OnNowCookieChanged;
         }
@@ -40,7 +40,7 @@ namespace AIWpfIntroduction.Example.ViewModels
 
         private void OnNowCookieChanged(object? obj, EventArgs args)
         {
-            RaisePropertyChanged();
+            RaisePropertyChanged(null);
             this.UpgradeAdd.RaiseCanExecuteChanged();
             this.UpgradeMul.RaiseCanExecuteChanged();
         }
@@ -300,8 +300,6 @@ namespace AIWpfIntroduction.Example.ViewModels
 
 
         
-        //時間を計測するオブジェクト
-        private GameTimer _timer;
 
         //モデルオブジェクト
         private Cookie _cookie;

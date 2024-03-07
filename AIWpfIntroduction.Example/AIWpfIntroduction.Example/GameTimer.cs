@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
@@ -9,14 +10,17 @@ namespace AIWpfIntroduction.Example
 {
     internal class GameTimer
     {
-        public GameTimer()
+        public GameTimer(Action action)
         {
             SetupTimer();
+            _action = action;
         }
 
+        private Action _action;
         private void MyTimerMethod(object sender, EventArgs e)
         {
-            //undefined
+            System.Diagnostics.Debug.WriteLine(Thread.CurrentThread.ManagedThreadId);
+            _action();
         }
         private DispatcherTimer _timer;
         public DispatcherTimer Timer
