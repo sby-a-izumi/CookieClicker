@@ -21,11 +21,11 @@ namespace AIWpfIntroduction.Example.ViewModels
         {
             this._timer = new GameTimer();
             this._cookie = new Cookie();
-            this._cookie.NowCookieChanged += testmethod;
+            this._cookie.NowCookieChanged += OnNowCookieChanged;
         }
 
         #region 各プロパティの取得または設定
-        private string _nowCookie = 0.ToString();
+       
         /// <summary>
         /// 現在値の取得または設定
         /// </summary>
@@ -33,22 +33,16 @@ namespace AIWpfIntroduction.Example.ViewModels
         {
             // Event
 
-            get { return this._nowCookie; }
+            get { return this._cookie.NowCookie; }
             // 値が違う場合更新
             // モデルで処理したものを
-            set
-            {
-                if (SetProperty(ref this._nowCookie, value))
-                {
-                    this.UpgradeAdd.RaiseCanExecuteChanged();
-                    this.UpgradeMul.RaiseCanExecuteChanged();
-                }
-            }
         }
 
-        private void testmethod(object? obj, EventArgs args)
+        private void OnNowCookieChanged(object? obj, EventArgs args)
         {
-            this.NowCookie = this._cookie.NowCookie;
+            RaisePropertyChanged(nameof(NowCookie));
+            this.UpgradeAdd.RaiseCanExecuteChanged();
+            this.UpgradeMul.RaiseCanExecuteChanged();
         }
 
 
@@ -170,7 +164,7 @@ namespace AIWpfIntroduction.Example.ViewModels
                     _ =>
                     {
                         var dummy = 0.0;
-                        if (!double.TryParse(this._nowCookie, out dummy))
+                        if (!double.TryParse(this.NowCookie, out dummy))
                         {
                             return false;
                         }
@@ -230,7 +224,7 @@ namespace AIWpfIntroduction.Example.ViewModels
                         var dummy = 0.0;
                         var nowCookie = 0.0;
                         var costAdd = 0.0;
-                        if (!double.TryParse(this._nowCookie, out nowCookie))
+                        if (!double.TryParse(this.NowCookie, out nowCookie))
                         {
                             return false;
                         }
@@ -276,7 +270,7 @@ namespace AIWpfIntroduction.Example.ViewModels
                         var dummy = 0.0;
                         var nowCookie = 0.0;
                         var costMul = 0.0;
-                        if (!double.TryParse(this._nowCookie, out nowCookie))
+                        if (!double.TryParse(this.NowCookie, out nowCookie))
                         {
                             return false;
                         }
