@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Threading;
 
 namespace AIWpfIntroduction.Example
@@ -17,29 +18,28 @@ namespace AIWpfIntroduction.Example
         }
 
         private Action _action;
-        private void MyTimerMethod(object sender, EventArgs e)
+        private void MyTimerMethod(object? sender, ElapsedEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine(Thread.CurrentThread.ManagedThreadId);
             _action();
         }
-        private DispatcherTimer _timer;
-        public DispatcherTimer Timer
+        private System.Timers.Timer _timer;
+        public System.Timers.Timer Timer
         {
             get { return _timer; }
         }
 
         private void SetupTimer()
         {
-            _timer = new DispatcherTimer();
+            _timer = new System.Timers.Timer(1000);
 
-            _timer.Interval = new TimeSpan(0, 0, 1);
 
-            _timer.Tick += new EventHandler(MyTimerMethod);
+            _timer.Elapsed += MyTimerMethod;
 
             _timer.Start();
 
 
-        }
         
+        }
     }
 }
