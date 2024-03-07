@@ -11,28 +11,28 @@ namespace AIWpfIntroduction.Example.Models
     internal class Calculator
     {
         //現在値
-        public double NowCookie { get; set; }
+        public int NowCookie { get; set; }
         
         //ボタンを押すごとに増加する値
-        public double IncCookie { get; set; }
+        public int IncCookie { get; set; }
 
         //適応された増加値
-        public double NowAdd { get; set; }
+        public int NowAdd { get; set; }
 
         //適応された増加率
-        public double NowMul { get; set; }
+        public int NowMul { get; set; }
 
         //適応された毎秒ごとの増加値
-        public double NowSec { get; set; }
+        public int NowSec { get; set; }
 
         //適応された30秒ごとの増加率
-        public double NowInt { get; set; }
+        public int NowInt { get; set; }
 
         //費用
-        public double CostAdd { get; set; }
-        public double CostMul { get; set; }
-        public double CostSec { get; set; }
-        public double CostInt { get; set; }
+        public int CostAdd { get; set; }
+        public int CostMul { get; set; }
+        public int CostSec { get; set; }
+        public int CostInt { get; set; }
 
         //現在値を計算
         public void ExecuteCalcNowCookie()
@@ -48,7 +48,7 @@ namespace AIWpfIntroduction.Example.Models
         public void ExecuteUpgradeAdd()
         {
             //増加値の増加量を計算
-            this.NowAdd = this.NowAdd + 1.0;
+            this.NowAdd = this.NowAdd + 1;
             //使ったコスト分、現在値を下げる
             this.NowCookie = this.NowCookie - this.CostAdd;
             //アップグレードコストを上昇
@@ -59,7 +59,7 @@ namespace AIWpfIntroduction.Example.Models
         //増加値の倍率のアップグレード時の計算処理
         public void ExecuteUpgradeMul()
         {
-            this.NowMul = this.NowMul + 0.5;
+            this.NowMul = this.NowMul + 1;
             this.NowCookie = this.NowCookie - this.CostMul;
             this.CostMul = this.CostMul * 10;
             ExecuteCalcIncCookie();

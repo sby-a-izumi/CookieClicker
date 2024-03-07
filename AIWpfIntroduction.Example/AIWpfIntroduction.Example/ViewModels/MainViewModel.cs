@@ -43,7 +43,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// <summary>
         /// 現在値の取得
         /// </summary>
-        public string NowCookie
+        public int NowCookie
         {
             get { return this._cookie.NowCookie; }
         }
@@ -51,7 +51,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// <summary>
         /// 増加値の取得
         /// </summary>
-        public string IncCookie
+        public int IncCookie
         {
             get { return this._cookie.IncCookie; }
         }
@@ -59,7 +59,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// <summary>
         /// 増加値の増加量の取得
         /// </summary>
-        public string NowAdd
+        public int NowAdd
         {
             get { return this._cookie.NowAdd; }
         }
@@ -67,7 +67,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// <summary>
         /// 増加値の倍率の取得
         /// </summary>
-        public string NowMul
+        public int NowMul
         {
             get { return this._cookie.NowMul; }
         }
@@ -75,7 +75,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// <summary>
         /// 生産量の取得
         /// </summary>
-        public string NowSec
+        public int NowSec
         {
             get { return this._cookie.NowSec; }
         }
@@ -83,7 +83,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// <summary>
         /// 利息率の取得
         /// </summary>
-        public string NowInt
+        public int NowInt
         {
             get { return this._cookie.NowInt; }
         }
@@ -91,7 +91,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// <summary>
         /// 増加量コスト
         /// </summary>
-        public string CostAdd
+        public int CostAdd
         {
             get { return this._cookie.CostAdd; }
         }
@@ -99,7 +99,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// <summary>
         /// 倍率コスト
         /// </summary>
-        public string CostMul
+        public int CostMul
         {
             get { return this._cookie.CostMul; }
         }
@@ -107,7 +107,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// <summary>
         /// 生産量コスト
         /// </summary>
-        public string CostSec
+        public int CostSec
         {
             get { return this._cookie.CostSec; }
         }
@@ -115,7 +115,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// <summary>
         /// 利息率コスト
         /// </summary>
-        public string CostInt
+        public int CostInt
         {
             get { return this._cookie.CostInt; }
         }
@@ -138,15 +138,6 @@ namespace AIWpfIntroduction.Example.ViewModels
                     },
                     _ =>
                     {
-                        var dummy = 0.0;
-                        if (!double.TryParse(this.NowCookie, out dummy))
-                        {
-                            return false;
-                        }
-                        if (!double.TryParse(this.IncCookie, out dummy))
-                        {
-                            return false;
-                        }
                         return true;
                     }));
             }
@@ -165,19 +156,6 @@ namespace AIWpfIntroduction.Example.ViewModels
                     },
                     _ =>
                     {
-                        var dummy = 0.0;
-                        if (!double.TryParse(this.IncCookie, out dummy))
-                        {
-                            return false;
-                        }
-                        if (!double.TryParse(this.NowAdd, out dummy))
-                        {
-                            return false;
-                        }
-                        if (!double.TryParse(this.NowMul, out dummy))
-                        {
-                            return false;
-                        }
                         return true;
                     }));
             }
@@ -196,31 +174,8 @@ namespace AIWpfIntroduction.Example.ViewModels
                     },
                     _ =>
                     {
-                        var dummy = 0.0;
-                        var nowCookie = 0.0;
-                        var costAdd = 0.0;
-                        if (!double.TryParse(this.NowCookie, out nowCookie))
-                        {
-                            return false;
-                        }
-                        if (!double.TryParse(this.NowAdd, out dummy))
-                        {
-                            return false;
-                        }
-                        if (!double.TryParse(this.CostAdd, out costAdd))
-                        {
-                            return false;
-                        }
-                        if (!double.TryParse(this.IncCookie, out dummy))
-                        {
-                            return false;
-                        }
-                        if (!double.TryParse(this.NowMul, out dummy))
-                        {
-                            return false;
-                        }
                         // アップグレード条件
-                        if (nowCookie < costAdd)
+                        if (this._cookie.NowCookie < this._cookie.CostAdd)
                         {
                             return false;
                         }
@@ -242,27 +197,7 @@ namespace AIWpfIntroduction.Example.ViewModels
                     },
                     _ =>
                     {
-                        var dummy = 0.0;
-                        var nowCookie = 0.0;
-                        var costMul = 0.0;
-                        if (!double.TryParse(this.NowCookie, out nowCookie))
-                        {
-                            return false;
-                        }
-                        if (!double.TryParse(this.NowMul, out dummy))
-                        {
-                            return false;
-                        }
-                    if (!double.TryParse(this.CostMul, out costMul))
-                        {
-                            return false;
-                        }
-                        if (!double.TryParse(this.IncCookie, out dummy))
-                        {
-                            return false;
-                        }
-
-                        if (nowCookie < costMul)
+                        if (this._cookie.NowCookie < this._cookie.CostMul)
                         {
                             return false;
                         }
@@ -272,8 +207,6 @@ namespace AIWpfIntroduction.Example.ViewModels
         }
         #endregion 各コマンドの取得メソッド
 
-
-        
 
         //モデルオブジェクト
         private Cookie _cookie;

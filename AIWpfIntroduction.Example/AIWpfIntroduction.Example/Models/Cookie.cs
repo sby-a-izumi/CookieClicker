@@ -18,11 +18,11 @@ namespace AIWpfIntroduction.Example.Models
             this._calc = new Calculator();
         }
         #region Cookieクラスの変数
-        private string _nowCookie = "0";
+        private int _nowCookie = 0;
         /// <summary>
         /// 現在値のプロパティ
         /// </summary>
-        public string NowCookie
+        public int NowCookie
         {
             get { return this._nowCookie; }
             private set {
@@ -30,81 +30,72 @@ namespace AIWpfIntroduction.Example.Models
             }
         }
 
-        public event EventHandler? NowCookieChanged;
         
-        private void RaiseNowCookieChanged()
-        {
-            var h = NowCookieChanged;
-            if (h != null)
-            {
-                h(this, EventArgs.Empty);
-            }
-        }
         
-        private string _incCookie = "1";
+        private int _incCookie = 1;
         //ボタンを押すごとに増加する値
-        public string IncCookie
+        public int IncCookie
         {
             get { return this._incCookie; }
             set { this._incCookie = value; }
         }
 
-        private string _nowAdd = "0";
+        private int _nowAdd = 0;
         //適応された増加値
-        public string NowAdd
+        public int NowAdd
         {
             get { return this._nowAdd; }
             set { this._nowAdd = value; }
         }
 
-        private string _nowMul = "1.0";
+        private int _nowMul = 1;
         //適応された増加率
-        public string NowMul
+        public int NowMul
         {
             get { return this._nowMul; }
             set { this._nowMul = value; }
         }
 
-        private string _nowSec = "1.0";
+        private int _nowSec = 1;
         //適応された毎秒ごとの増加値
-        public string NowSec
+        public int NowSec
         {
             get { return this._nowSec; }
             set { this._nowSec = value; }
         }
 
-        private string _nowInt = "0";
+        private int _nowInt = 0;
         //適応された30秒ごとの増加率
-        public string NowInt
+        public int NowInt
         {
             get { return this._nowInt; }
             set { this._nowInt = value; }
         }
 
         //費用
-        private string _costAdd = "10";
-        public string CostAdd
+        private int _costAdd = 10;
+        public int CostAdd
         {
             get { return this._costAdd; }
             set { this._costAdd = value; }
         }
 
-        private string _costMul = "20";
-        public string CostMul
+        private int _costMul = 20;
+        public int CostMul
         {
             get { return this._costMul; }
             set { this._costMul = value; }
         }
 
-        private string _costSec = "30";
-        public string CostSec
+        private int _costSec = 30;
+        public int CostSec
         {
             get { return this._costSec; }
             set { this._costSec = value; }
         }
 
-        private string _costInt = "100";
-        public string CostInt
+        private int _costInt = 100;
+        public int CostInt
         {
             get { return this._costInt; }
             set { this._costInt = value; }
@@ -116,100 +107,67 @@ namespace AIWpfIntroduction.Example.Models
         #region 各コマンド本体
         private void AddCookiePerSecond()
         {
-            this.NowCookie = (int.Parse(this.NowCookie) + double.Parse(this.NowSec)).ToString();
+            this.NowCookie = this.NowCookie + this.NowSec;
             RaiseNowCookieChanged();
         }
 
+        public event EventHandler? NowCookieChanged;
+
+        private void RaiseNowCookieChanged()
+        {
+            var h = NowCookieChanged;
+            if (h != null)
+            {
+                h(this, EventArgs.Empty);
+            }
+        }
         //現在値を変更する
         public void UpdateNowCookie()
         {
-            var nowCookie = 0.0;
-            var incCookie = 0.0;
-            if (!double.TryParse(this.NowCookie, out nowCookie))
-            {
-                return;
-            }
-            if (!double.TryParse(this.IncCookie, out incCookie))
-            {
-                return;
-            }
-            this._calc.NowCookie = nowCookie;
-            this._calc.IncCookie = incCookie;
+            
+            this._calc.NowCookie = this.NowCookie;
+            this._calc.IncCookie = this.IncCookie;
             this._calc.ExecuteCalcNowCookie();
-            this.NowCookie = this._calc.NowCookie.ToString();
+            this.NowCookie = this._calc.NowCookie;
         }
 
         //増加値を変更する
         public void UpdateIncCookie()
         {
-            var incCookie = 0.0;
-            var nowAdd = 0.0;
-            var nowMul = 1.0;
-            if (!double.TryParse(this.IncCookie, out incCookie))
-            {
-                return;
-            }
-            if (!double.TryParse(this.NowAdd, out nowAdd))
-            {
-                return;
-            }
-            if (!double.TryParse(this.NowMul, out nowMul))
-            {
-                return;
-            }
-            this._calc.IncCookie = incCookie;
-            this._calc.NowAdd = nowAdd;
-            this._calc.NowMul = nowMul;
+            this._calc.IncCookie = this.IncCookie;
+            this._calc.NowAdd = this.NowAdd;
+            this._calc.NowMul = this.NowMul;
             this._calc.ExecuteCalcIncCookie();
-            this.IncCookie = this._calc.IncCookie.ToString();
+            this.IncCookie = this._calc.IncCookie;
         }
 
         //増加値の増加量をアップグレード
         public void OnAdd()
         {
-            var nowCookie = 0.0;
-            var nowAdd = 0.0;
-            var costAdd = 0.0;
-            var incCookie = 0.0;
-            var nowMul = 0.0;
-            //コマンド取得の時点で数値以外弾いているが、想定外のトラブルを想定してTryParseで実装
-            if (!double.TryParse(this.NowCookie, out nowCookie)) { return; }
-            if (!double.TryParse(this.NowAdd, out nowAdd)) { return; }
-            if (!double.TryParse(this.CostAdd, out costAdd)) { return; }
-            if (!double.TryParse(this.IncCookie, out incCookie)) { return; }
-            if (!double.TryParse(this.NowMul, out nowMul)) { return; }
-            this._calc.NowCookie = nowCookie;
-            this._calc.NowAdd = nowAdd;
-            this._calc.CostAdd = costAdd;
-            this._calc.IncCookie = incCookie;
-            this._calc.NowMul = nowMul;
+            this._calc.NowCookie = this.NowCookie;
+            this._calc.NowAdd = this.NowAdd;
+            this._calc.CostAdd = this.CostAdd;
+            this._calc.IncCookie = this.IncCookie;
+            this._calc.NowMul = this.NowMul;
             this._calc.ExecuteUpgradeAdd();
-            this.NowCookie = this._calc.NowCookie.ToString();
-            this.NowAdd = this._calc.NowAdd.ToString();
-            this.CostAdd = this._calc.CostAdd.ToString();
-            this.IncCookie = this._calc.IncCookie.ToString();
+            this.NowCookie = this._calc.NowCookie;
+            this.NowAdd = this._calc.NowAdd;
+            this.CostAdd = this._calc.CostAdd;
+            this.IncCookie = this._calc.IncCookie;
 
         }
 
         public void OnMul()
         {
-            var nowCookie = 0.0;
-            var nowMul = 0.0;
-            var costMul = 0.0;
-            var incCookie = 0.0;
-            if (!double.TryParse(this.NowCookie, out nowCookie)) { return; }
-            if (!double.TryParse(this.NowMul, out nowMul)) { return; }
-            if (!double.TryParse(this.CostMul, out costMul)) { return; }
-            if (!double.TryParse(this.IncCookie, out incCookie)) { return; }
-            this._calc.NowCookie = nowCookie;
-            this._calc.NowMul = nowMul;
-            this._calc.CostMul = costMul;
-            this._calc.IncCookie = incCookie;
+            this._calc.NowCookie = this.NowCookie;
+            this._calc.NowMul = this.NowMul;
+            this._calc.CostMul = this.CostMul;
+            this._calc.IncCookie = this.IncCookie;
             this._calc.ExecuteUpgradeMul();
-            this.NowCookie = this._calc.NowCookie.ToString();
-            this.NowMul = this._calc.NowMul.ToString();
-            this.CostMul = this._calc.CostMul.ToString();
-            this.IncCookie = this._calc.IncCookie.ToString();
+            this.NowCookie = this._calc.NowCookie;
+            this.NowMul = this._calc.NowMul;
+            this.CostMul = this._calc.CostMul;
+            this.IncCookie = this._calc.IncCookie;
 
         }
 
