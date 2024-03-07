@@ -13,12 +13,20 @@ internal class CookieClicker : IDisposable
     /// <summary>
     /// 新しいインスタンスを生成します。
     /// </summary>
-    public CookieClicker()
+    /// <param name="calculator">計算機能を提供します。</param>
+    public CookieClicker(ICookieClickerCalculator calculator)
     {
         ProductCookieAsync();
+        _calculator = calculator;
     }
 
+
     #region フィールド
+
+    /// <summary>
+    /// 計算機能を提供します。
+    /// </summary>
+    private ICookieClickerCalculator _calculator;
 
     /// <summary>
     /// 非同期タスク制御機能です。
@@ -32,57 +40,57 @@ internal class CookieClicker : IDisposable
     /// <summary>
     /// 現在値を取得します。
     /// </summary>
-    public int CurrentCookie { get; private set; }
+    public int CurrentCookie { get { return _calculator.CurrentCookie; } }
 
     /// <summary>
     /// 現在の増加量を取得します。
     /// </summary>
-    public int CurrentIncCookie { get; private set; } = 1;
+    public int CurrentIncCookie { get { return _calculator.CurrentIncCookie; } }
 
     /// <summary>
     /// 現在の生産量を取得します。
     /// </summary>
-    public int CurrentProductCookie { get; private set; } = 1;
+    public int CurrentProductCookie { get { return _calculator.CurrentProductCookie; } }
 
     /// <summary>
     /// 加算増加量を取得します。
     /// </summary>
-    public int AddIncCookie { get; private set; } = 1;
+    public int AddIncCookie { get { return _calculator.AddIncCookie; } }
 
     /// <summary>
     /// 倍率増加量を取得します。
     /// </summary>
-    public int MultiIncCookie { get; private set; } = 1;
+    public int MultiIncCookie { get { return _calculator.MultiIncCookie; } }
 
     /// <summary>
     /// 毎秒増加量を取得します。
     /// </summary>
-    public int SecIncCookie { get; private set; } = 1;
+    public int SecIncCookie { get { return _calculator.SecIncCookie; } }
 
     /// <summary>
     /// 毎秒増加量を取得します。
     /// </summary>
-    public int IntIncCookie { get; private set; } = 1;
+    public int IntIncCookie { get { return _calculator.IntIncCookie; } }
 
     /// <summary>
     /// 加算コストを取得します。
     /// </summary>
-    public int CostAdd { get; private set; } = 10;
+    public int CostAdd { get { return _calculator.CostAdd; } }
 
     /// <summary>
     /// 倍率コストを取得します。
     /// </summary>
-    public int CostMul { get; private set; } = 20;
+    public int CostMul { get { return _calculator.CostMul; } }
 
     /// <summary>
     /// 毎秒コストを取得します。
     /// </summary>
-    public int CostSec { get; private set; } = 30;
+    public int CostSec { get { return _calculator.CostSec; } }
 
     /// <summary>
     /// 毎秒倍率コストを取得します。
     /// </summary>
-    public int CostInt { get; private set; } = 100;
+    public int CostInt { get { return _calculator.CostInt; } }
 
     #endregion 公開プロパティ
 
@@ -93,7 +101,7 @@ internal class CookieClicker : IDisposable
     /// </summary>
     public void UpdateCurrentCookie()
     {
-        CurrentCookie += CurrentIncCookie;
+        _calculator.UpdateCurrentCookie();
         RaiseCurrentCookieChanged();
     }
 
@@ -102,10 +110,7 @@ internal class CookieClicker : IDisposable
     /// </summary>
     public void UpgradeAddIncCookie()
     {
-        AddIncCookie++;
-        CurrentCookie -= CostAdd;
-        CostAdd += 50;
-        UpdateCurrentIncCookie();
+        _calculator.UpgradeAddIncCookie();
     }
 
     /// <summary>
@@ -113,10 +118,7 @@ internal class CookieClicker : IDisposable
     /// </summary>
     public void UpgradeMultiIncCookie()
     {
-        MultiIncCookie++;
-        CurrentCookie -= CostMul;
-        CostMul *= 10;
-        UpdateCurrentIncCookie();
+        _calculator.UpgradeMultiIncCookie();
     }
 
     /// <summary>
@@ -124,10 +126,7 @@ internal class CookieClicker : IDisposable
     /// </summary>
     public void UpgradeSecIncCookie()
     {
-        SecIncCookie++;
-        CurrentCookie -= CostSec;
-        CostSec += 100;
-        UpdateCurrentProductCookie();
+        _calculator.UpgradeSecIncCookie();
     }
 
     /// <summary>
@@ -135,10 +134,7 @@ internal class CookieClicker : IDisposable
     /// </summary>
     public void UpgradeIntProductCookie()
     {
-        IntIncCookie++;
-        CurrentCookie -= CostInt;
-        CostInt *= 10;
-        UpdateCurrentProductCookie();
+        _calculator.UpgradeIntProductCookie();
     }
 
     #endregion 公開メソッド
@@ -157,7 +153,7 @@ internal class CookieClicker : IDisposable
             {
                 while (_cancellationTokenSource.Token.IsCancellationRequested is false)
                 {
-                    CurrentCookie += CurrentProductCookie;
+                    _calculator.UpdateCurrentCookieProduct();
                     RaiseCurrentCookieChanged();
                     await Task.Delay(1000);
                 }
@@ -173,21 +169,7 @@ internal class CookieClicker : IDisposable
         }, _cancellationTokenSource.Token);
     }
 
-    /// <summary>
-    /// 増加量を更新します。
-    /// </summary>
-    private void UpdateCurrentIncCookie()
-    {
-        CurrentIncCookie = AddIncCookie * MultiIncCookie;
-    }
 
-    /// <summary>
-    /// 生産量を更新します。
-    /// </summary>
-    private void UpdateCurrentProductCookie()
-    {
-        CurrentProductCookie = SecIncCookie * IntIncCookie;
-    }
 
     #endregion 非公開メソッド
 

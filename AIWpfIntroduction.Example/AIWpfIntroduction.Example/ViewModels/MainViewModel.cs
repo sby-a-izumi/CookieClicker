@@ -29,7 +29,7 @@ internal class MainViewModel : NotificationObject
     /// <summary>
     /// CookkieClicker 機能を提供します。
     /// </summary>
-    private CookieClicker _cookieClicker = new ();
+    private CookieClicker _cookieClicker = new (new NormalCookieClickerCalculator());
 
     #endregion フィールド
 
