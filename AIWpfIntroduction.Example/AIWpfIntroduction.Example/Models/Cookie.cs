@@ -103,7 +103,7 @@ namespace AIWpfIntroduction.Example.Models
         #region 各コマンド本体
         private void AddCookiePerSecond()
         {
-            this.NowCookie = this.NowCookie + this.NowSec;
+            this.NowCookie = this.NowCookie + this.NowSec + (this.NowCookie * this.NowInt / 100);
             RaiseNowCookieChanged();
         }
 
@@ -151,6 +151,9 @@ namespace AIWpfIntroduction.Example.Models
             RaiseNowCookieChanged();
         }
 
+        /// <summary>
+        /// 増加値の倍率をアップグレード
+        /// </summary>
         public void OnMul()
         {
             //増加値の倍率を計算
@@ -164,6 +167,10 @@ namespace AIWpfIntroduction.Example.Models
             //現在値更新
             RaiseNowCookieChanged();
         }
+
+        /// <summary>
+        /// 生産量をアップグレード
+        /// </summary>
         public void OnSec()
         {
             this.NowSec += 1;
@@ -172,8 +179,17 @@ namespace AIWpfIntroduction.Example.Models
             UpdateIncCookie();
             RaiseNowCookieChanged();
         }
+
+        /// <summary>
+        /// 利息率をアップグレード
+        /// </summary>
         public void OnInt()
         {
+            this.NowInt += 1;
+            this.NowCookie -= this.CostInt;
+            this.CostInt += 50;
+            UpdateIncCookie();
+            RaiseNowCookieChanged();
         }
     #endregion 各コマンド本体
 
