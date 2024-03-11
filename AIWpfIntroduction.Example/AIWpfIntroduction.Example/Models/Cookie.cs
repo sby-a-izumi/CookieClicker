@@ -13,8 +13,9 @@ namespace AIWpfIntroduction.Example.Models
     {
         public Cookie()
         {
-            //this._timer = new GameTimer(() => App.Current.Dispatcher.BeginInvoke((Action)(() => AddCookiePerSecond())));
-            this._timer = new GameTimer(() => App.Current.Dispatcher.Invoke(()=> AddCookiePerSecond()));
+            this._timer = new GameTimer(() => App.Current.Dispatcher.InvokeAsync((Action)(() => AddCookiePerSecond())));
+            //this._timer = new GameTimer(() => App.Current.Dispatcher.Invoke(()=> AddCookiePerSecond()));
+            RaiseNowCookieChanged();
             this._calc = new Calculator();
         }
         #region Cookieクラスの変数
@@ -28,9 +29,7 @@ namespace AIWpfIntroduction.Example.Models
             private set {
                 this._nowCookie = value;
             }
-        }
-
-        
+        }  
         
         private int _incCookie = 1;
         //ボタンを押すごとに増加する値
@@ -154,6 +153,7 @@ namespace AIWpfIntroduction.Example.Models
             this.NowAdd = this._calc.NowAdd;
             this.CostAdd = this._calc.CostAdd;
             this.IncCookie = this._calc.IncCookie;
+            RaiseNowCookieChanged();
 
         }
 
@@ -168,6 +168,7 @@ namespace AIWpfIntroduction.Example.Models
             this.NowMul = this._calc.NowMul;
             this.CostMul = this._calc.CostMul;
             this.IncCookie = this._calc.IncCookie;
+            RaiseNowCookieChanged();
 
         }
 

@@ -36,6 +36,7 @@ namespace AIWpfIntroduction.Example.ViewModels
             RaisePropertyChanged(null);
             this.UpgradeAdd.RaiseCanExecuteChanged();
             this.UpgradeMul.RaiseCanExecuteChanged();
+            
         }
 
         #region Modelのインスタンスから各プロパティを取得
