@@ -16,7 +16,7 @@ namespace AIWpfIntroduction.Example.Models
             this._timer = new GameTimer(() => App.Current.Dispatcher.InvokeAsync((Action)(() => AddCookiePerSecond())));
             //this._timer = new GameTimer(() => App.Current.Dispatcher.Invoke(()=> AddCookiePerSecond()));
             RaiseNowCookieChanged();
-            this._calc = new Calculator();
+            //this._calc = new Calculator();
         }
         #region Cookieクラスの変数
         private int _nowCookie = 0;
@@ -26,7 +26,7 @@ namespace AIWpfIntroduction.Example.Models
         public int NowCookie
         {
             get { return this._nowCookie; }
-            private set {
+            set {
                 this._nowCookie = value;
             }
         }  
@@ -120,61 +120,57 @@ namespace AIWpfIntroduction.Example.Models
                 h(this, EventArgs.Empty);
             }
         }
-        //現在値を変更する
+        /// <summary>
+        /// 現在値を増加値分だけ加算する
+        /// </summary>
         public void UpdateNowCookie()
         {
-            
-            this._calc.NowCookie = this.NowCookie;
-            this._calc.IncCookie = this.IncCookie;
-            this._calc.ExecuteCalcNowCookie();
-            this.NowCookie = this._calc.NowCookie;
+            this.NowCookie += this.IncCookie;
         }
 
-        //増加値を変更する
+        /// <summary>
+        /// 増加値を変更する
+        /// </summary>
         public void UpdateIncCookie()
         {
-            this._calc.IncCookie = this.IncCookie;
-            this._calc.NowAdd = this.NowAdd;
-            this._calc.NowMul = this.NowMul;
-            this._calc.ExecuteCalcIncCookie();
-            this.IncCookie = this._calc.IncCookie;
+            this.IncCookie = (1 + this.NowAdd) * this.NowMul;
         }
 
-        //増加値の増加量をアップグレード
+        /// <summary>
+        /// 増加値の増加量をアップグレード
+        /// </summary>
         public void OnAdd()
         {
-            this._calc.NowCookie = this.NowCookie;
-            this._calc.NowAdd = this.NowAdd;
-            this._calc.CostAdd = this.CostAdd;
-            this._calc.IncCookie = this.IncCookie;
-            this._calc.NowMul = this.NowMul;
-            this._calc.ExecuteUpgradeAdd();
-            this.NowCookie = this._calc.NowCookie;
-            this.NowAdd = this._calc.NowAdd;
-            this.CostAdd = this._calc.CostAdd;
-            this.IncCookie = this._calc.IncCookie;
+            //増加値の増加量を計算
+            this.NowAdd += 1;
+            //コスト消費計算
+            this.NowCookie -= this.CostAdd;
+            //コスト上昇計算
+            this.CostAdd += 50;
+            //増加値更新
+            UpdateIncCookie();
+            //現在値更新
             RaiseNowCookieChanged();
-
         }
 
         public void OnMul()
         {
-            this._calc.NowCookie = this.NowCookie;
-            this._calc.NowMul = this.NowMul;
-            this._calc.CostMul = this.CostMul;
-            this._calc.IncCookie = this.IncCookie;
-            this._calc.ExecuteUpgradeMul();
-            this.NowCookie = this._calc.NowCookie;
-            this.NowMul = this._calc.NowMul;
-            this.CostMul = this._calc.CostMul;
-            this.IncCookie = this._calc.IncCookie;
+            //増加値の倍率を計算
+            this.NowMul += 1;
+            //コスト消費計算
+            this.NowCookie -= this.CostMul;
+            //コスト上昇計算
+            this.CostMul *= 10;
+            //増加値更新
+            UpdateIncCookie();
+            //現在値更新
             RaiseNowCookieChanged();
 
         }
 
     #endregion 各コマンド本体
 
-        private Calculator _calc;
+        //private Calculator _calc;
         private GameTimer _timer;
 
     }
