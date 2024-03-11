@@ -21,7 +21,6 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// </summary>
         public MainViewModel()
         {
-            
             this._cookie = new Cookie();
             this._cookie.NowCookieChanged += OnNowCookieChanged;
         }
@@ -36,7 +35,8 @@ namespace AIWpfIntroduction.Example.ViewModels
             RaisePropertyChanged(null);
             this.UpgradeAdd.RaiseCanExecuteChanged();
             this.UpgradeMul.RaiseCanExecuteChanged();
-            
+            this.UpgradeSec.RaiseCanExecuteChanged();
+            this.UpgradeInt.RaiseCanExecuteChanged();
         }
 
         #region Modelのインスタンスから各プロパティを取得
@@ -126,7 +126,9 @@ namespace AIWpfIntroduction.Example.ViewModels
         #region 各コマンドの取得メソッド
 
         private DelegateCommand _calcNowCommand;
-        //現在値変更コマンドの取得
+        /// <summary>
+        /// 現在値変更コマンド取得
+        /// </summary>
         public DelegateCommand CalcNowCommand
         {
             get
@@ -144,7 +146,9 @@ namespace AIWpfIntroduction.Example.ViewModels
         }
 
         private DelegateCommand _calcIncCommand;
-        //増加値変更コマンドの取得
+        /// <summary>
+        /// 増加値変更コマンド取得
+        /// </summary>
         public DelegateCommand CalcIncCommand
         {
             get
@@ -162,7 +166,9 @@ namespace AIWpfIntroduction.Example.ViewModels
         }
 
         private DelegateCommand _upgradeAdd;
-        //増加値の増加量をアップグレードするコマンドの取得
+        /// <summary>
+        /// 増加量アップグレードコマンド取得
+        /// </summary>
         public DelegateCommand UpgradeAdd
         {
             get
@@ -185,7 +191,9 @@ namespace AIWpfIntroduction.Example.ViewModels
         }
 
         private DelegateCommand _upgradeMul;
-        //増加量の倍率をアップグレードするコマンドの取得
+        /// <summary>
+        /// 倍率アップグレードコマンド取得
+        /// </summary>
         public DelegateCommand UpgradeMul
         {
             get
@@ -198,6 +206,54 @@ namespace AIWpfIntroduction.Example.ViewModels
                     _ =>
                     {
                         if (this._cookie.NowCookie < this._cookie.CostMul)
+                        {
+                            return false;
+                        }
+                        return true;
+                    }));
+            }
+        }
+
+        private DelegateCommand _upgradeSec;
+        /// <summary>
+        /// 生産量アップグレードコマンド取得
+        /// </summary>
+        public DelegateCommand UpgradeSec
+        {
+            get
+            {
+                return this._upgradeSec ?? (this._upgradeSec = new DelegateCommand(
+                    _ =>
+                    {
+                        this._cookie.OnSec();
+                    },
+                    _ =>
+                    {
+                        if (this._cookie.NowCookie < this._cookie.CostSec)
+                        {
+                            return false;
+                        }
+                        return true;
+                    }));
+            }
+        }
+
+        private DelegateCommand _upgradeInt;
+        /// <summary>
+        /// 生産利息アップグレードコマンド取得
+        /// </summary>
+        public DelegateCommand UpgradeInt
+        {
+            get
+            {
+                return this._upgradeInt ?? (this._upgradeInt = new DelegateCommand(
+                    _ =>
+                    {
+                        this._cookie.OnInt();
+                    },
+                    _ =>
+                    {
+                        if (this._cookie.NowCookie < this._cookie.CostInt)
                         {
                             return false;
                         }

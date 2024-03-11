@@ -164,6 +164,17 @@ namespace AIWpfIntroduction.Example.Models
             //現在値更新
             RaiseNowCookieChanged();
         }
+        public void OnSec()
+        {
+            this.NowSec += 1;
+            this.NowCookie -= this.CostSec;
+            this.CostSec += 30;
+            UpdateIncCookie();
+            RaiseNowCookieChanged();
+        }
+        public void OnInt()
+        {
+        }
     #endregion 各コマンド本体
 
         private GameTimer _timer;
