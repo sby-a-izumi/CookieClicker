@@ -9,14 +9,11 @@ namespace AIWpfIntroduction.Example.Models
     using AIWpfIntroduction.Example.ViewModels;
     using System.Security.Cryptography.X509Certificates;
 
-    class Cookie
+    internal class Cookie
     {
         public Cookie()
         {
             this._timer = new GameTimer(() => App.Current.Dispatcher.InvokeAsync((Action)(() => AddCookiePerSecond())));
-            //this._timer = new GameTimer(() => App.Current.Dispatcher.Invoke(()=> AddCookiePerSecond()));
-            RaiseNowCookieChanged();
-            //this._calc = new Calculator();
         }
         #region Cookieクラスの変数
         private int _nowCookie = 0;
@@ -126,6 +123,7 @@ namespace AIWpfIntroduction.Example.Models
         public void UpdateNowCookie()
         {
             this.NowCookie += this.IncCookie;
+            RaiseNowCookieChanged();
         }
 
         /// <summary>
@@ -165,12 +163,9 @@ namespace AIWpfIntroduction.Example.Models
             UpdateIncCookie();
             //現在値更新
             RaiseNowCookieChanged();
-
         }
-
     #endregion 各コマンド本体
 
-        //private Calculator _calc;
         private GameTimer _timer;
 
     }

@@ -135,7 +135,6 @@ namespace AIWpfIntroduction.Example.ViewModels
                     _ =>
                     {
                         this._cookie.UpdateNowCookie();
-                        RaisePropertyChanged(null);
                     },
                     _ =>
                     {
