@@ -29,7 +29,17 @@ namespace AIWpfIntroduction.Example.ViewModels
             // CalcIncCommandのインスタンス化
             CalcIncCommand = new DelegateCommand(_ => CalcInc(), _ => CanCalcInc());
 
+            // UpgradeAddCommandのインスタンス化
+            UpgradeAddCommand = new DelegateCommand(_ => UpgradeAdd(), _ => CanUpgradeAdd());
 
+            // UpgradeMulCommandのインスタンス化
+            UpgradeMulCommand = new DelegateCommand(_ => UpgradeMul(), _ => CanUpgradeMul());
+
+            // UpgradeSecCommandのインスタンス化
+            UpgradeSecCommand = new DelegateCommand(_ => UpgradeSec(), _ => CanUpgradeSec());
+
+            // UpgradeMulCommandのインスタンス化
+            UpgradeIntCommand = new DelegateCommand(_ => UpgradeInt(), _ => CanUpgradeInt());
 
             // NowCookieChangedイベントにOnNowCookieChangedイベントハンドラを購読しています。
             this._cookie.NowCookieChanged += OnNowCookieChanged;
@@ -43,10 +53,10 @@ namespace AIWpfIntroduction.Example.ViewModels
         private void OnNowCookieChanged(object? obj, EventArgs args)
         {
             RaisePropertyChanged(null);
-            this.UpgradeAdd.RaiseCanExecuteChanged();
-            this.UpgradeMul.RaiseCanExecuteChanged();
-            this.UpgradeSec.RaiseCanExecuteChanged();
-            this.UpgradeInt.RaiseCanExecuteChanged();
+            this.UpgradeAddCommand.RaiseCanExecuteChanged();
+            this.UpgradeMulCommand.RaiseCanExecuteChanged();
+            this.UpgradeSecCommand.RaiseCanExecuteChanged();
+            this.UpgradeIntCommand.RaiseCanExecuteChanged();
         }
 
         #region Modelのインスタンスから各プロパティを取得
@@ -135,11 +145,19 @@ namespace AIWpfIntroduction.Example.ViewModels
 
         #region 各コマンドの取得メソッド
 
+
+        /// <summary>
+        /// CalcNowCommandを実行したときに処理されるメソッド
+        /// </summary>
         private void CalcNow()
         {
             this._cookie.UpdateNowCookie();
         }
 
+        /// <summary>
+        /// CalcNowCommandの実行可否判断
+        /// </summary>
+        /// <returns></returns>
         private bool CanCalcNow()
         {
             return true;
@@ -148,14 +166,20 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// <summary>
         /// 現在値変更コマンド取得
         /// </summary>
-        public DelegateCommand CalcNowCommand { get; private set; }
+        public DelegateCommand CalcNowCommand { get; init; }
 
-        
+        /// <summary>
+        /// CalcIncCommandを実行したときに処理されるメソッド
+        /// </summary>
         private void CalcInc()
         {
             this._cookie.UpdateIncCookie();
         }
 
+        /// <summary>
+        /// CalcIncCommandの実行可否判断
+        /// </summary>
+        /// <returns></returns>
         private bool CanCalcInc()
         {
             return true;
@@ -166,107 +190,98 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// </summary>
         public DelegateCommand CalcIncCommand { get; private set; }
 
-        private DelegateCommand _upgradeAdd;
+        /// <summary>
+        /// UpgradeAddCommandが実行されたときに処理されるメソッド
+        /// </summary>
+        private void UpgradeAdd()
+        {
+            this._cookie.OnAdd();
+        }
+
+        /// <summary>
+        /// UpgradeAddCommandの実行可否判断
+        /// </summary>
+        /// <returns></returns>
+        private bool CanUpgradeAdd()
+        {
+            return this._cookie.NowCookie >= this._cookie.CostAdd ;
+        }
+
         /// <summary>
         /// 増加量アップグレードコマンド取得
         /// </summary>
-        public DelegateCommand UpgradeAdd
+        public DelegateCommand UpgradeAddCommand { get; init; }
+
+        /// <summary>
+        /// UpgradeMulCommandが実行されたときに処理されるメソッド
+        /// </summary>
+        private void UpgradeMul()
         {
-            get
-            {
-                return this._upgradeAdd ?? (this._upgradeAdd = new DelegateCommand(
-                    _ =>
-                    {
-                        this._cookie.OnAdd();
-                    },
-                    _ =>
-                    {
-                        // アップグレード条件
-                        if (this._cookie.NowCookie < this._cookie.CostAdd)
-                        {
-                            return false;
-                        }
-                        return true;
-                    }));
-            }
+            this._cookie.OnMul();
         }
 
-        private DelegateCommand _upgradeMul;
+        /// <summary>
+        /// UpgradeMulCommandの実行可否判断
+        /// </summary>
+        /// <returns></returns>
+        private bool CanUpgradeMul()
+        {
+            return this._cookie.NowCookie >= this._cookie.CostMul;
+        }
+
         /// <summary>
         /// 倍率アップグレードコマンド取得
         /// </summary>
-        public DelegateCommand UpgradeMul
+        public DelegateCommand UpgradeMulCommand { get; init; }
+
+        /// <summary>
+        /// UpgradeSecCommandが実行されたときに処理されるメソッド
+        /// </summary>
+        private void UpgradeSec()
         {
-            get
-            {
-                return this._upgradeMul ?? (this._upgradeMul = new DelegateCommand(
-                    _ =>
-                    {
-                        this._cookie.OnMul();
-                    },
-                    _ =>
-                    {
-                        if (this._cookie.NowCookie < this._cookie.CostMul)
-                        {
-                            return false;
-                        }
-                        return true;
-                    }));
-            }
+            this._cookie.OnSec();
         }
 
-        private DelegateCommand _upgradeSec;
+        /// <summary>
+        /// UpgradeSecCommandの実行可否判断
+        /// </summary>
+        /// <returns></returns>
+        private bool CanUpgradeSec()
+        {
+            return this._cookie.NowCookie >= this._cookie.CostSec;
+        }
+        
         /// <summary>
         /// 生産量アップグレードコマンド取得
         /// </summary>
-        public DelegateCommand UpgradeSec
+        public DelegateCommand UpgradeSecCommand { get; init; }
+
+        /// <summary>
+        /// UpgradeIntCommandが実行されたときに処理されるメソッド
+        /// </summary>
+        private void UpgradeInt()
         {
-            get
-            {
-                return this._upgradeSec ?? (this._upgradeSec = new DelegateCommand(
-                    _ =>
-                    {
-                        this._cookie.OnSec();
-                    },
-                    _ =>
-                    {
-                        if (this._cookie.NowCookie < this._cookie.CostSec)
-                        {
-                            return false;
-                        }
-                        return true;
-                    }));
-            }
+            this._cookie.OnInt();
         }
 
-        private DelegateCommand _upgradeInt;
+        /// <summary>
+        /// UpgradeIntCommandの実行可否判断
+        /// </summary>
+        /// <returns></returns>
+        private bool CanUpgradeInt()
+        {
+            return this._cookie.NowCookie < this._cookie.CostInt;
+        }
+        
         /// <summary>
         /// 生産利息アップグレードコマンド取得
         /// </summary>
-        public DelegateCommand UpgradeInt
-        {
-            get
-            {
-                return this._upgradeInt ?? (this._upgradeInt = new DelegateCommand(
-                    _ =>
-                    {
-                        this._cookie.OnInt();
-                    },
-                    _ =>
-                    {
-                        if (this._cookie.NowCookie < this._cookie.CostInt)
-                        {
-                            return false;
-                        }
-                        return true;
-                    }));
-            }
-        }
+        public DelegateCommand UpgradeIntCommand { get; init; }
         #endregion 各コマンドの取得メソッド
 
 
         //モデルオブジェクト
-        private Cookie _cookie;
+        private readonly Cookie _cookie;
     }
 }
 
