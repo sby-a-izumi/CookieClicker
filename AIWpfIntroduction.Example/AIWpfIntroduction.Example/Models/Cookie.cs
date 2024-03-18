@@ -13,7 +13,8 @@ namespace AIWpfIntroduction.Example.Models
     {
         public Cookie()
         {
-            this._timer = new GameTimer(() => App.Current.Dispatcher.InvokeAsync((Action)(() => AddCookiePerSecond())));
+            //this._timer = new GameTimer(() => App.Current.Dispatcher.InvokeAsync((Action)(() => AddCookiePerSecond())));
+            this._timer = new GameTimer(AddCookiePerSecond);
         }
         #region Cookieクラスの変数
         private int _nowCookie = 0;
@@ -104,11 +105,17 @@ namespace AIWpfIntroduction.Example.Models
         private void AddCookiePerSecond()
         {
             this.NowCookie = this.NowCookie + this.NowSec + (this.NowCookie * this.NowInt / 100);
-            RaiseNowCookieChanged();
+
+            App.Current.Dispatcher.InvokeAsync((Action)(() => RaiseNowCookieChanged()));
         }
+
+        
 
         public event EventHandler? NowCookieChanged;
 
+        /// <summary>
+        /// NowCookieChangedイベントを発行しています。
+        /// </summary>
         private void RaiseNowCookieChanged()
         {
             var h = NowCookieChanged;

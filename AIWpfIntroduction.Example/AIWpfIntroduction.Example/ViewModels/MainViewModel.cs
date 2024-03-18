@@ -22,6 +22,8 @@ namespace AIWpfIntroduction.Example.ViewModels
         public MainViewModel()
         {
             this._cookie = new Cookie();
+
+            // NowCookieChangedイベントにOnNowCookieChangedイベントハンドラを購読しています。
             this._cookie.NowCookieChanged += OnNowCookieChanged;
         }
 
