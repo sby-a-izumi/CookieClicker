@@ -188,7 +188,7 @@ namespace AIWpfIntroduction.Example.ViewModels
         /// <summary>
         /// 増加値変更コマンド取得
         /// </summary>
-        public DelegateCommand CalcIncCommand { get; private set; }
+        public DelegateCommand CalcIncCommand { get; init; }
 
         /// <summary>
         /// UpgradeAddCommandが実行されたときに処理されるメソッド
