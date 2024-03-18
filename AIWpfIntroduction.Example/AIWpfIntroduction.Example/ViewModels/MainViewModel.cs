@@ -23,6 +23,14 @@ namespace AIWpfIntroduction.Example.ViewModels
         {
             this._cookie = new Cookie();
 
+            // CalcNowCommandのインスタンス化
+            CalcNowCommand = new DelegateCommand(_ => CalcNow(), _ => CanCalcNow());
+
+            // CalcIncCommandのインスタンス化
+            CalcIncCommand = new DelegateCommand(_ => CalcInc(), _ => CanCalcInc());
+
+
+
             // NowCookieChangedイベントにOnNowCookieChangedイベントハンドラを購読しています。
             this._cookie.NowCookieChanged += OnNowCookieChanged;
         }
@@ -127,45 +135,36 @@ namespace AIWpfIntroduction.Example.ViewModels
 
         #region 各コマンドの取得メソッド
 
-        private DelegateCommand _calcNowCommand;
+        private void CalcNow()
+        {
+            this._cookie.UpdateNowCookie();
+        }
+
+        private bool CanCalcNow()
+        {
+            return true;
+        }
+
         /// <summary>
         /// 現在値変更コマンド取得
         /// </summary>
-        public DelegateCommand CalcNowCommand
+        public DelegateCommand CalcNowCommand { get; private set; }
+
+        
+        private void CalcInc()
         {
-            get
-            {
-                return this._calcNowCommand ?? (this._calcNowCommand = new DelegateCommand(
-                    _ =>
-                    {
-                        this._cookie.UpdateNowCookie();
-                    },
-                    _ =>
-                    {
-                        return true;
-                    }));
-            }
+            this._cookie.UpdateIncCookie();
         }
 
-        private DelegateCommand _calcIncCommand;
+        private bool CanCalcInc()
+        {
+            return true;
+        }
+
         /// <summary>
         /// 増加値変更コマンド取得
         /// </summary>
-        public DelegateCommand CalcIncCommand
-        {
-            get
-            {
-                return this._calcIncCommand ?? (this._calcIncCommand = new DelegateCommand(
-                    _ =>
-                    {
-                        this._cookie.UpdateIncCookie();
-                    },
-                    _ =>
-                    {
-                        return true;
-                    }));
-            }
-        }
+        public DelegateCommand CalcIncCommand { get; private set; }
 
         private DelegateCommand _upgradeAdd;
         /// <summary>
