@@ -11,6 +11,10 @@ namespace AIWpfIntroduction.Example
 {
     internal class GameTimer
     {
+        /// <summary>
+        /// 新しいインスタンスを生成します。
+        /// </summary>
+        /// <param name="action">引数なしのデリゲートを指定</param>
         public GameTimer(Action action)
         {
             SetupTimer();
@@ -18,7 +22,12 @@ namespace AIWpfIntroduction.Example
         }
 
         private Action _action;
-        private void MyTimerMethod(object? sender, ElapsedEventArgs e)
+        /// <summary>
+        /// Elapsedイベントが発行された際に実行されるイベントハンドラ
+        /// </summary>
+        /// <param name="sender">発行元</param>
+        /// <param name="e">イベント引数</param>
+        private void OnElapsed(object? sender, ElapsedEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine(Thread.CurrentThread.ManagedThreadId);
             _action();
@@ -31,11 +40,13 @@ namespace AIWpfIntroduction.Example
 
         private void SetupTimer()
         {
+            // 1秒ごとに実行するtimerをインスタンス化
             _timer = new System.Timers.Timer(1000);
 
+            // ElapsedイベントにOnElapsedを購読
+            _timer.Elapsed +=OnElapsed;
 
-            _timer.Elapsed += MyTimerMethod;
-
+            // 設定されたTimer設定でスタート
             _timer.Start();
 
 
