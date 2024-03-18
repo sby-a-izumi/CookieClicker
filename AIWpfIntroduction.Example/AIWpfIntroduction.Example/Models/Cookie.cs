@@ -17,86 +17,34 @@ namespace AIWpfIntroduction.Example.Models
             this._timer = new GameTimer(AddCookiePerSecond);
         }
         #region Cookieクラスの変数
-        private int _nowCookie = 0;
         /// <summary>
         /// 現在値のプロパティ
         /// </summary>
-        public int NowCookie
-        {
-            get { return this._nowCookie; }
-            set {
-                this._nowCookie = value;
-            }
-        }  
+        public int NowCookie { get; private set; } = 0;
         
-        private int _incCookie = 1;
         //ボタンを押すごとに増加する値
-        public int IncCookie
-        {
-            get { return this._incCookie; }
-            set { this._incCookie = value; }
-        }
+        public int IncCookie { get; private set; } = 1;
 
-        private int _nowAdd = 0;
         //適応された増加値
-        public int NowAdd
-        {
-            get { return this._nowAdd; }
-            set { this._nowAdd = value; }
-        }
+        public int NowAdd { get; private set; } = 0;
 
-        private int _nowMul = 1;
         //適応された増加率
-        public int NowMul
-        {
-            get { return this._nowMul; }
-            set { this._nowMul = value; }
-        }
+        public int NowMul { get; private set; } = 1;
 
-        private int _nowSec = 1;
         //適応された毎秒ごとの増加値
-        public int NowSec
-        {
-            get { return this._nowSec; }
-            set { this._nowSec = value; }
-        }
+        public int NowSec { get; private set; } = 1;
 
-        private int _nowInt = 0;
         //適応された30秒ごとの増加率
-        public int NowInt
-        {
-            get { return this._nowInt; }
-            set { this._nowInt = value; }
-        }
+        public int NowInt { get; private set; } = 0;
 
         //費用
-        private int _costAdd = 10;
-        public int CostAdd
-        {
-            get { return this._costAdd; }
-            set { this._costAdd = value; }
-        }
+        public int CostAdd { get; private set; } = 10;
 
-        private int _costMul = 20;
-        public int CostMul
-        {
-            get { return this._costMul; }
-            set { this._costMul = value; }
-        }
+        public int CostMul { get; private set; } = 20;
 
-        private int _costSec = 30;
-        public int CostSec
-        {
-            get { return this._costSec; }
-            set { this._costSec = value; }
-        }
+        public int CostSec { get; private set; } = 30;
 
-        private int _costInt = 100;
-        public int CostInt
-        {
-            get { return this._costInt; }
-            set { this._costInt = value; }
-        }
+        public int CostInt { get; private set; } = 100;
         
         #endregion Cookieクラスの変数
 
